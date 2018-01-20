@@ -1,4 +1,4 @@
-public class triangleDemo {
+public class TriangleDemo {
     public static void main(String[] args) {
       drawTriangle(10);
     }

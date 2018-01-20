@@ -1,4 +1,4 @@
-public class maxOfArray {
+public class MaxOfArray {
    public static int max(int[] m) {
     int max = m[0];
      for (int count = 1; count < m.length; count++) {
