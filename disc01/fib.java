@@ -4,16 +4,9 @@ public class fib {
   }
   
   public static int fibonacci(int n) {
-    int counter = 1;
-    int prev = 0;
-    int curr = 1;
-    int total = prev + curr;
-    while (counter < n) {
-      prev = curr;
-      curr = total;
-      total = prev + curr;
-      counter++;
+    if (n <= 1) {
+      return n;
+    } else {
+      return fib(n - 1) + fib(n - 2_;)
     }
-    return total;
-  }
 }
