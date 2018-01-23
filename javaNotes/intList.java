@@ -12,4 +12,12 @@ public class IntList {
         L = new IntList(10, L);
         L = new IntList(5, L);
     }
+
+    public int size() {
+        // return the size of the list using recursion
+        if (rest == null) {
+            return 1;
+        }
+        return 1 + this.rest.size();
+    }
 }
