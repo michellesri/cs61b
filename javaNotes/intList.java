@@ -12,7 +12,11 @@ public class IntList {
         L = new IntList(10, L);
         L = new IntList(5, L);
 
-        System.out.println(L.size())
+        System.out.println(L.size());
+
+        System.out.println(L.iterativeSize());
+
+        System.out.println(L.get(2));
     }
 
     public int size() {
@@ -33,5 +37,13 @@ public class IntList {
             p = p.rest;
         }
         return totalSize;
+    }
+
+    public int get(i) {
+        // returns the ith element in the list
+        if (i == 0) {
+            return first;
+        }
+        return rest.get(i - 1);
     }
 }
