@@ -46,4 +46,13 @@ public class IntList {
         }
         return rest.get(i - 1);
     }
+
+    public static IntList incrList(IntList L, int x) {
+        // returns a new IntList similar to L, but with all values incremented by x.
+
+    }
+
+    public static IntList dincrList(IntList L, int x) {
+        // returns a new IntList similar to L, but with all values decremented by x.
+    }
 }
