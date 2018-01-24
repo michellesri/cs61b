@@ -28,6 +28,10 @@ public class Planet {
         this.imgFileName = p.imgFileName;
     }
 
+    public void draw() {
+        StdDraw.picture(this.xxPos, this.yyPos, "images/" + this.imgFileName);
+    }
+
     public double calcDistance(Planet p1) {
         double dx = this.xxPos - p1.xxPos;
         double dy = this.yyPos - p1.yyPos;

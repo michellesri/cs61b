@@ -1,6 +1,27 @@
-//import java.util.Arrays;
+import java.util.Arrays;
 
 public class NBody {
+
+    public static void main(String[] args) {
+        double T = Double.parseDouble(args[0]);
+        double dt = Double.parseDouble(args[1]);
+        String filename = args[2];
+
+        double radiusUniverse = readRadius(filename);
+        Planet[] planets = readPlanets(filename);
+
+        StdDraw.setScale(-radiusUniverse, radiusUniverse);
+        StdDraw.clear();
+        StdDraw.picture(0, 0, "images/starfield.jpg");
+        for(int i = 0; i < planets.length; i++) {
+            planets[i].draw();
+        }
+
+        StdDraw.show();
+//        System.out.println(Arrays.toString(planets));
+
+
+    }
     public static double readRadius(String fileName) {
         In in = new In(fileName);
 
