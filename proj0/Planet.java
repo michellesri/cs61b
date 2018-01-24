@@ -55,4 +55,26 @@ public class Planet {
         return force * dy / r;
     }
 
+    public double calcNetForceExertedByX(Planet[] planets) {
+        double sumXComponents = 0;
+        for (int i = 0; i < planets.length; i++) {
+            if (this.equals(planets[i])) {
+                continue;
+            }
+            sumXComponents += calcForceExertedByX(planets[i]);
+        }
+        return sumXComponents;
+    }
+
+    public double calcNetForceExertedByY(Planet[] planets) {
+        double sumYComponents = 0;
+        for (int i = 0; i < planets.length; i++) {
+            if (this.equals(planets[i])) {
+                continue;
+            }
+            sumYComponents += calcForceExertedByY(planets[i]);
+        }
+        return sumYComponents;
+    }
+
 }
