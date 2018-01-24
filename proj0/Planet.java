@@ -32,4 +32,10 @@ public class Planet {
         return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
     }
 
+    public double calcForceExertedBy(Planet p1) {
+        double newton = 6.67 * Math.pow(10, -11);
+        double r = calcDistance(p1);
+        return newton * this.mass * p1.mass / Math.pow(r, 2);
+    }
+
 }
