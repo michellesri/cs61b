@@ -77,4 +77,14 @@ public class Planet {
         return sumYComponents;
     }
 
+    public void update(double dt, double fX, double fY) {
+        double aNetX = fX / this.mass;
+        double aNetY = fY / this.mass;
+
+        this.xxVel = this.xxVel + dt * aNetX;
+        this.yyVel = this.yyVel + dt * aNetY;
+
+        this.xxPos = this.xxPos + dt * this.xxVel;
+        this.yyPos = this.yyPos + dt * this.yyVel;
+    }
 }
