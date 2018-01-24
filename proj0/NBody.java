@@ -10,16 +10,37 @@ public class NBody {
         double radiusUniverse = readRadius(filename);
         Planet[] planets = readPlanets(filename);
 
-        StdDraw.setScale(-radiusUniverse, radiusUniverse);
-        StdDraw.clear();
-        StdDraw.picture(0, 0, "images/starfield.jpg");
-        for(int i = 0; i < planets.length; i++) {
-            planets[i].draw();
+
+        StdDraw.enableDoubleBuffering();
+
+        int time = 0;
+
+        while (time < T) {
+            double[] xForces = new double[planets.length];
+            double[] yForces = new double[planets.length];
+
+            for (int i = 0; i < planets.length; i++) {
+                xForces[i] = planets[i].calcNetForceExertedByX(planets);
+                yForces[i] = planets[i].calcNetForceExertedByY(planets);
+            }
+
+            for (int i = 0; i < planets.length; i++) {
+                planets[i].update(dt, xForces[i], yForces[i]);
+            }
+
+            StdDraw.setScale(-radiusUniverse, radiusUniverse);
+            StdDraw.clear();
+            StdDraw.picture(0, 0, "images/starfield.jpg");
+
+            for(int i = 0; i < planets.length; i++) {
+                planets[i].draw();
+            }
+            StdDraw.show();
+            StdDraw.pause(10);
+
+            time += dt;
+
         }
-
-        StdDraw.show();
-//        System.out.println(Arrays.toString(planets));
-
 
     }
     public static double readRadius(String fileName) {
