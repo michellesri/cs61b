@@ -1,7 +1,18 @@
 // SLList - a list of integers
 
 public class SLList {
-  public IntNode first; // variable
+
+  public class IntNode {
+    public int item;
+    public IntNode next;
+
+    public IntNode(int i, IntNode n) {
+      item = i;
+      next = n;
+    }
+  }
+
+  private IntNode first; // variable
 
   public SLList(int x) { // constructor
     first = new IntNode(x, null);
