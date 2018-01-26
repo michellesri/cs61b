@@ -27,7 +27,7 @@ public class IntList {
         return 1 + this.rest.size();
     }
 
-    public int interativeSize() {
+    public int iterativeSize() {
         // return the size of the list iteratively
         IntList p = this;
         int totalSize = 0;
@@ -39,7 +39,7 @@ public class IntList {
         return totalSize;
     }
 
-    public int get(i) {
+    public int get(int i) {
         // returns the ith element in the list
         if (i == 0) {
             return first;
@@ -49,7 +49,8 @@ public class IntList {
 
     public static IntList incrList(IntList L, int x) {
         // returns a new IntList similar to L, but with all values incremented by x.
-
+        // TODO not implemented
+        return null;
     }
 
     public static IntList dincrList(IntList L, int x) {
