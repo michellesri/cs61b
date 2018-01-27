@@ -16,7 +16,6 @@ public class IntList {
      * Remaining elements of list.
      */
     public IntList rest;
-
     /**
      * A List with first FIRST0 and rest REST0.
      */
@@ -81,18 +80,52 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        IntList current = A;
+        while (current.rest != null) {
+            current = current.rest;
+        }
+
+        current.rest = B;
+        return A;
     }
 
     /**
      * Returns a list consisting of the elements of A followed by the
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
-    public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+//    public static IntList catenate(IntList A, IntList B) {
+//        IntList current = A;
+//
+//        IntList myNewList = new IntList(A.first, null);
+//
+//        while (current.rest )
+//
+////        return new IntList(A.first, squareListRecursive(L.rest));
+//    }
+
+    public static IntList copyList(IntList x) {
+        IntList current = x;
+        IntList firstCopy = new IntList(x.first, null);
+        IntList complete = firstCopy;
+        while(current.rest != null) {
+            firstCopy.rest = new IntList(current.rest.first, null);
+            firstCopy = firstCopy.rest;
+            current = current.rest;
+        }
+        return complete;
     }
+
+    public static void main(String[] args) {
+        IntList test = new IntList(1, null);
+        IntList test2 = new IntList (2, null);
+        IntList test3 = new IntList (3, null);
+
+        test.rest = test2;
+        test2.rest = test3;
+        System.out.println(copyList(test));
+    }
+
+
 
 
 
