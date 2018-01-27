@@ -1,46 +1,48 @@
 // SLList - a list of integers
 
-public class SLList {
+public class SLList<PlaceholderType> {
+  // placeholderType allows us to not immediately define type as int or str.
+  // the first item (if it exists) is at sentinel.next
+  private StuffNode sentinel; // variable
+  private StuffNode last;
+  private int size;
 
-  private static class IntNode {
-    public int item;
-    public IntNode next;
+  private class StuffNode {
+    public PlaceholderType item;
+    public StuffNode next;
 
-    public IntNode(int i, IntNode n) {
+    public StuffNode(PlaceholderType i, StuffNode n) {
       item = i;
       next = n;
     }
   }
 
-  // the first item (if it exists) is at sentinel.next
-  private IntNode sentinel; // variable
-  private int size;
 
-  public SLList() { // constructor for empty list
-    sentinel = new IntNode(63, null);
+//  public SLList() { // constructor for empty list
+//    sentinel = new StuffNode(null, null);
+//    size = 0;
+//  }
+
+  public SLList(PlaceholderType x) { // constructor
+    sentinel = new StuffNode( x, null);
     size = 0;
   }
 
-  public SLList(int x) { // constructor
-    sentinel = new IntNode( 63, null);
-    size = 0;
-  }
 
-
-  public void addFirst(int x) {
+  public void addFirst(PlaceholderType x) {
     // adds x to the front of the list
-    sentinel.next = new IntNode(x, sentinel.next);
+    sentinel.next = new StuffNode(x, sentinel.next);
     size += 1;
   }
 
-  public int getFirst() {
+  public PlaceholderType getFirst() {
     // returns the first item in the list
     return sentinel.next.item;
   }
 
 //  public int sizeIterative() {
 //    int counter = 0;
-//    IntNode current = first;
+//    StuffNode current = first;
 //
 //    while (current != null) {
 //      counter++;
@@ -56,29 +58,25 @@ public class SLList {
   }
 
 
-  public void addLast(int x) {
+  public void addLast(PlaceholderType x) {
   // add an item to the end of a list
     size += 1;
 
-    IntNode p = sentinel;
-    // move p until it reaches the end of the list
-    while (p.next != null) {
-      p = p.next;
-    }
-    p.next = new IntNode(x, null);
+    last.next = new StuffNode(x,null);
+    last = last.next;
 
   }
 
-  public static void main(String[] args) {
-    // creates a list of one integer, 10.
-    SLList L = new SLList();
-    L.addFirst(10);
-    L.addFirst(5);
-    L.addLast(20);
-    System.out.println(L.sizeIterative());
-
-    System.out.println(L.getFirst()); //should return 5
-  }
+//  public static void main(String[] args) {
+//    // creates a list of one integer, 10.
+//    SLList L = new SLList();
+//    L.addFirst(10);
+//    L.addFirst(5);
+//    L.addLast(20);
+//    System.out.println(L.sizeIterative());
+//
+//    System.out.println(L.getFirst()); //should return 5
+//  }
 
 
 
