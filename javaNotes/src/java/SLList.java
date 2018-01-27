@@ -16,13 +16,16 @@ public class SLList {
   private int size;
 
   public SLList(int x) { // constructor
+
     first = new IntNode(x, null);
+    size = 1;
   }
 
 
   public void addFirst(int x) {
     // adds x to the front of the list
     first = new IntNode(x, first);
+    size += 1;
   }
 
   public int getFirst() {
@@ -52,15 +55,15 @@ public class SLList {
   //   return counter;
   // }
 
-  private static int sizeRecursive(IntNode x) {
-    if (x == null) {
-      return 1;
-    }
-    return 1 + sizeRecursive(x.next);
-  }
+//  private static int sizeRecursive(IntNode x) {
+//    if (x == null) {
+//      return 1;
+//    }
+//    return 1 + sizeRecursive(x.next);
+//  }
 
   public int size() {
-    return sizeRecursive(first);
+    return size;
   }
 
   // public int sizeRecursive(IntNode x) {
@@ -71,6 +74,7 @@ public class SLList {
   // }
 
   public void addLast(int x) {
+    size += 1;
     // add an item to the end of a list
     IntNode p = first;
     // move p until it reaches the end of the list
