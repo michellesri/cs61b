@@ -12,71 +12,55 @@ public class SLList {
     }
   }
 
-  private IntNode first; // variable
+  // the first item (if it exists) is at sentinel.next
+  private IntNode sentinel; // variable
   private int size;
 
-  public SLList(int x) { // constructor
+  public SLList() { // constructor for empty list
+    sentinel = new IntNode(63, null);
+    size = 0;
+  }
 
-    first = new IntNode(x, null);
-    size = 1;
+  public SLList(int x) { // constructor
+    sentinel = new IntNode( 63, null);
+    size = 0;
   }
 
 
   public void addFirst(int x) {
     // adds x to the front of the list
-    first = new IntNode(x, first);
+    sentinel.next = new IntNode(x, sentinel.next);
     size += 1;
   }
 
   public int getFirst() {
     // returns the first item in the list
-    return first.item;
+    return sentinel.next.item;
   }
 
-  public int sizeIterative() {
-    int counter = 0;
-    IntNode current = first;
-
-    while (current != null) {
-      counter++;
-      current = current.next;
-    }
-    return counter;
-  }
-
-  // public static int sizeIterative(SLList s) {
-  //   int counter = 0;
-  //   SLList current = s.first;
-  //
-  //   while (current != null) {
-  //     counter++;
-  //     current = current.next;
-  //   }
-  //   return counter;
-  // }
-
-//  private static int sizeRecursive(IntNode x) {
-//    if (x == null) {
-//      return 1;
+//  public int sizeIterative() {
+//    int counter = 0;
+//    IntNode current = first;
+//
+//    while (current != null) {
+//      counter++;
+//      current = current.next;
 //    }
-//    return 1 + sizeRecursive(x.next);
+//    return counter;
 //  }
+
+
 
   public int size() {
     return size;
   }
 
-  // public int sizeRecursive(IntNode x) {
-  //   if (x == null) {
-  //     return 1;
-  //   }
-  //   return 1 + sizeRecursive(x.next);
-  // }
 
   public void addLast(int x) {
+  // add an item to the end of a list
     size += 1;
-    // add an item to the end of a list
-    IntNode p = first;
+
+    IntNode p = sentinel;
     // move p until it reaches the end of the list
     while (p.next != null) {
       p = p.next;
@@ -87,7 +71,7 @@ public class SLList {
 
   public static void main(String[] args) {
     // creates a list of one integer, 10.
-    SLList L = new SLList(15);
+    SLList L = new SLList();
     L.addFirst(10);
     L.addFirst(5);
     L.addLast(20);
