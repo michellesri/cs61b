@@ -3,7 +3,14 @@
  */
 
 
-//
+// items: [0, 0, 0...]
+    // size: 0
+
+    //invariants: things that are always true about our data structure
+    // addlast: the next item we want to add will go into position size
+    // the num of items in the list should be size
+
+    // getlast: the item we want to return is in position size - 1
 public class AList {
     int[] items;
     int size;
@@ -16,20 +23,25 @@ public class AList {
 
     /** Inserts X into the back of the list. */
     public void addLast(int x) {
+        items[size] = x;
+        size++;
     }
 
     /** Returns the item from the back of the list. */
     public int getLast() {
-        return 0;        
+
+        return items[size - 1];
     }
     /** Gets the ith item in the list (0 is the front). */
     public int get(int i) {
-        return 0;        
+
+        return items[i];
     }
 
     /** Returns the number of items in the list. */
     public int size() {
-        return 0;        
+
+        return size;
     }
 
     /** Deletes item from back of the list and
