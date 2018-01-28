@@ -93,15 +93,16 @@ public class IntList {
      * Returns a list consisting of the elements of A followed by the
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
-//    public static IntList catenate(IntList A, IntList B) {
-//        IntList current = A;
-//
-//        IntList myNewList = new IntList(A.first, null);
-//
-//        while (current.rest )
-//
-////        return new IntList(A.first, squareListRecursive(L.rest));
-//    }
+    public static IntList catenate(IntList A, IntList B) {
+        IntList copyA = copyList(A);
+        IntList pointer = copyA;
+
+        while (copyA.rest != null) {
+            copyA = copyA.rest;
+        }
+        copyA.rest = B;
+        return pointer;
+    }
 
     public static IntList copyList(IntList x) {
         IntList current = x;
@@ -116,13 +117,17 @@ public class IntList {
     }
 
     public static void main(String[] args) {
-        IntList test = new IntList(1, null);
-        IntList test2 = new IntList (2, null);
-        IntList test3 = new IntList (3, null);
+//        IntList test = new IntList(1, null);
+//        IntList test2 = new IntList (2, null);
+//        IntList test3 = new IntList (3, null);
+//
+//        test.rest = test2;
+//        test2.rest = test3;
+//        System.out.println(copyList(test));
 
-        test.rest = test2;
-        test2.rest = test3;
-        System.out.println(copyList(test));
+        IntList origL = IntList.of(1, 2, 3);
+        IntList squaredList = squareListRecursive(origL);
+        System.out.println(squaredList);
     }
 
 
