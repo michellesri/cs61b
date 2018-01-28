@@ -2,9 +2,9 @@
  *  @author Josh Hug
  */
 
-
-// items: [0, 0, 0...]
-    // size: 0
+// index:  0  1
+// items: [5, 9, 0...]
+    // size: 2
 
     //invariants: things that are always true about our data structure
     // addlast: the next item we want to add will go into position size
@@ -12,8 +12,8 @@
 
     // getlast: the item we want to return is in position size - 1
 public class AList {
-    int[] items;
-    int size;
+    private int[] items;
+    private int size;
 
     /** Creates an empty list. */
     public AList() {
@@ -23,6 +23,11 @@ public class AList {
 
     /** Inserts X into the back of the list. */
     public void addLast(int x) {
+        if (size == items.length) {
+            int[] a = new int[size + 1];
+            System.arraycopy(items, 0, a, 0, size);
+            items = a;
+        }
         items[size] = x;
         size++;
     }
@@ -47,6 +52,9 @@ public class AList {
     /** Deletes item from back of the list and
       * returns deleted item. */
     public int removeLast() {
-        return 0;
+
+        int x = getLast();
+        size--;
+        return x;
     }
 } 
