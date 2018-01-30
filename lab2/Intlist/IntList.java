@@ -100,6 +100,9 @@ public class IntList {
         IntList copyA = copyList(A);
         IntList pointer = copyA;
 
+        if (copyA == null) {
+            return B;
+        }
         while (copyA.rest != null) {
             copyA = copyA.rest;
         }
