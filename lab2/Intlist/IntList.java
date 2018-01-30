@@ -81,6 +81,9 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         IntList current = A;
+        if (current == null) {
+            return B;
+        }
         while (current.rest != null) {
             current = current.rest;
         }
@@ -106,6 +109,9 @@ public class IntList {
 
     public static IntList copyList(IntList x) {
         IntList current = x;
+        if (x == null) {
+            return null;
+        }
         IntList firstCopy = new IntList(x.first, null);
         IntList complete = firstCopy;
         while(current.rest != null) {
