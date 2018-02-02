@@ -5,7 +5,7 @@ import java.util.Formatter;
  * with a large number of additional methods.
  *
  * @author P. N. Hilfinger, with some modifications by Josh Hug and melaniecebula
- *         [Do not modify this file.]
+ * [Do not modify this file.]
  */
 public class IntList {
     /**
@@ -16,6 +16,7 @@ public class IntList {
      * Remaining elements of list.
      */
     public IntList rest;
+
     /**
      * A List with first FIRST0 and rest REST0.
      */
@@ -28,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -117,12 +118,16 @@ public class IntList {
         }
         IntList firstCopy = new IntList(x.first, null);
         IntList complete = firstCopy;
-        while(current.rest != null) {
+        while (current.rest != null) {
             firstCopy.rest = new IntList(current.rest.first, null);
             firstCopy = firstCopy.rest;
             current = current.rest;
         }
         return complete;
+    }
+
+    public static IntList reverse(IntList A) {
+        return null;
     }
 
     public static void main(String[] args) {
@@ -138,22 +143,6 @@ public class IntList {
         IntList squaredList = squareListRecursive(origL);
         System.out.println(squaredList);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**
@@ -278,4 +267,3 @@ public class IntList {
         return out.toString();
     }
 }
-

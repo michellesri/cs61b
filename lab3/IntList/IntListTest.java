@@ -66,6 +66,22 @@ public class IntListTest {
         assertEquals(IntList.of(1, 2, 3), A);
     }
 
+    /**
+     * Returns the reverse of the given IntList.
+     * This method is destructive. If given null
+     * as an input, returns null.
+     */
+
+    public void testIntListReverse() {
+        IntList A = IntList.of(1, 2, 3);
+        IntList exp = IntList.of(3, 2, 1);
+
+
+//        assertNotEquals(exp, A); // tests that fn is destructive
+//        assertEquals(null, reverse(null));
+//        assertEquals(exp, reverse(a)); // fn returns reversed list
+    }
+
     /** If you're running this from the command line, you'll need
       * to add a main method. See ArithmeticTest.java for an
       * example. */

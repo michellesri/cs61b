@@ -2,7 +2,7 @@ public class LinkedListDeque<PlaceholderType> {
     // placeholderType allows us to not immediately define type as int or str.
     // the first item (if it exists) is at sentinel.next
     private TypeNode sentinel; // variable
-    private TypeNode last;
+    private TypeNode lastSentinel; // last sentinel
     private int size;
 
     private class TypeNode {
@@ -10,15 +10,15 @@ public class LinkedListDeque<PlaceholderType> {
         public TypeNode next;
         public TypeNode prev;
 
-        public TypeNode(PlaceholderType i, TypeNode n, TypeNode p) {
+        public TypeNode(PlaceholderType i, TypeNode n, TypeNode p) { //constructor for typenode
             item = i;
             next = n;
             prev = p;
         }
     }
 
-    public LinkedListDeque(PlaceholderType x) { // constructor
-        sentinel = new TypeNode( x, null, null);
+    public LinkedListDeque() { // constructor for deque
+        sentinel = new TypeNode( null, null, null);
         size = 0;
     }
 
@@ -33,42 +33,63 @@ public class LinkedListDeque<PlaceholderType> {
         // add an item to the end of a list
         size += 1;
 
-        last.next = new TypeNode(x,null, last); //should change n to sentinel? for it to loop?
-        last = last.next;
-
+        lastSentinel.prev = new TypeNode(x,lastSentinel, lastSentinel.prev);
     }
-
     public PlaceholderType getFirst() {
         // returns the first item in the list
         return sentinel.next.item;
     }
 
     public PlaceholderType removeFirst() {
-        PlaceholderType first = getFirst();
-        PlaceholderType removedNode = first;
-        if (first == null) {
+        if (size == 0) {
             return null;
         }
         size--;
-        first = first.next;
+        TypeNode removedNode = sentinel.next;
+        removedNode.next.prev = sentinel;
+        sentinel.next = sentinel.next.next;
+        return removedNode.item;
+    }
+
+    public PlaceholderType removeLast() {
+        if (size == 0) {
+            return null;
+        }
+        size--;
+        TypeNode removedNode = lastSentinel.prev;
+        lastSentinel.prev = lastSentinel;
+        return removedNode.item;
+    }
+
+    public PlaceholderType get() {
+
     }
 
 
-    public int size() { //change this to private?
+    public int size() {
         return size;
     }
 
     public boolean isEmpty() {
         // returns true if deque is empty, false otherwise
-        return sentinel.next == null;
+        return size == 0;
     }
 
     public void printDeque() {
+//      start from sentinel print the item by going through the list
+        TypeNode currentNode = sentinel.next;
+        while (currentNode != lastSentinel) {
+            System.out.println(currentNode.item);
+            currentNode = currentNode.next;
 
+        }
     }
 
-
-
-
+    public static void main(String[] args) {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        lld1.addFirst(10);
+        lld1.removeFirst();
+        lld1.size();
+    }
 
 }
