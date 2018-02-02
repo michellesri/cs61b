@@ -61,9 +61,19 @@ public class LinkedListDeque<PlaceholderType> {
         return removedNode.item;
     }
 
-    public PlaceholderType get() {
-
+    public PlaceholderType get(int index) {
+        TypeNode currentNode = sentinel.next;
+        if (index >= size) {
+            return null;
+        }
+        while (index > 0) {
+            currentNode = currentNode.next;
+            index--;
+        }
+        return currentNode.item;
     }
+
+//    for getRecursive, make helper method that uses the nested class
 
 
     public int size() {
