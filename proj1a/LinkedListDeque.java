@@ -1,3 +1,5 @@
+import java.lang.reflect.Type;
+
 public class LinkedListDeque<PlaceholderType> {
     // placeholderType allows us to not immediately define type as int or str.
     // the first item (if it exists) is at sentinel.next
@@ -19,9 +21,24 @@ public class LinkedListDeque<PlaceholderType> {
 
     public LinkedListDeque() { // constructor for deque
         sentinel = new TypeNode( null, null, null);
+        lastSentinel = new TypeNode( null, null, null);
+
         size = 0;
     }
 
+    public PlaceholderType getRecursive(int index) {
+        TypeNode currentNode = sentinel.next;
+        return getRecursiveHelper(currentNode, index);
+    }
+
+    private PlaceholderType getRecursiveHelper(TypeNode currentNode, int currentIndex) {
+        if (currentIndex < 0 || currentIndex > size || currentNode == null) {
+            return null;
+        } else if (currentIndex == 0) {
+            return currentNode.item;
+        }
+        return getRecursiveHelper(currentNode.next, currentIndex - 1);
+    }
 
     public void addFirst(PlaceholderType x) {
         // adds x to the front of the list
@@ -89,7 +106,7 @@ public class LinkedListDeque<PlaceholderType> {
 //      start from sentinel print the item by going through the list
         TypeNode currentNode = sentinel.next;
         while (currentNode != lastSentinel) {
-            System.out.println(currentNode.item);
+            System.out.print(currentNode.item + " ");
             currentNode = currentNode.next;
 
         }
