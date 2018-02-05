@@ -21,7 +21,8 @@ public class LinkedListDeque<PlaceholderType> {
 
     public LinkedListDeque() { // constructor for deque
         sentinel = new TypeNode( null, null, null);
-        lastSentinel = new TypeNode( null, null, null);
+        lastSentinel = new TypeNode( null, null, sentinel);
+        sentinel.next = lastSentinel;
 
         size = 0;
     }
@@ -64,7 +65,7 @@ public class LinkedListDeque<PlaceholderType> {
         size--;
         TypeNode removedNode = sentinel.next;
         removedNode.next.prev = sentinel;
-        sentinel.next = sentinel.next.next;
+        sentinel.next = removedNode.next;
         return removedNode.item;
     }
 
@@ -74,7 +75,8 @@ public class LinkedListDeque<PlaceholderType> {
         }
         size--;
         TypeNode removedNode = lastSentinel.prev;
-        lastSentinel.prev = lastSentinel;
+        lastSentinel.prev = removedNode.prev;
+        removedNode.prev.next = lastSentinel;
         return removedNode.item;
     }
 
@@ -105,6 +107,9 @@ public class LinkedListDeque<PlaceholderType> {
     public void printDeque() {
 //      start from sentinel print the item by going through the list
         TypeNode currentNode = sentinel.next;
+        if (currentNode != null) {
+            return;
+        }
         while (currentNode != lastSentinel) {
             System.out.print(currentNode.item + " ");
             currentNode = currentNode.next;
