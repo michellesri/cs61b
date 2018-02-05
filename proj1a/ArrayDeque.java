@@ -71,6 +71,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         T removedNode = myArrayDeque[firstIndex];
         myArrayDeque[firstIndex] = null;
         if (firstIndex == myArrayDeque.length - 1) {
@@ -90,6 +93,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         T removedNode = myArrayDeque[lastIndex];
         myArrayDeque[lastIndex] = null;
         if (lastIndex == 0) {

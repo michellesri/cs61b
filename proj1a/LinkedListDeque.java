@@ -41,8 +41,9 @@ public class LinkedListDeque<T> {
 
     public void addFirst(T x) {
         // adds x to the front of the list
-        sentinel.next = new TypeNode(x, sentinel.next, sentinel);
-        sentinel.next.next.prev = sentinel.next;
+        TypeNode newNode = new TypeNode(x, sentinel.next, sentinel);
+        sentinel.next = newNode;
+        newNode.next.prev = sentinel.next;
         size += 1;
     }
 
@@ -51,7 +52,7 @@ public class LinkedListDeque<T> {
         size += 1;
         TypeNode newNode = new TypeNode(x, lastSentinel, lastSentinel.prev);
         lastSentinel.prev = newNode;
-        newNode.prev.next = lastSentinel;
+        newNode.prev.next = newNode;
     }
 
     public T removeFirst() {
