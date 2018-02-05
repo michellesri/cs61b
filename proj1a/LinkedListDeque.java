@@ -1,6 +1,4 @@
-import java.lang.reflect.Type;
-
-public class LinkedListDeque<PlaceholderType> {
+public class LinkedListDeque<T> {
     // placeholderType allows us to not immediately define type as int or str.
     // the first item (if it exists) is at sentinel.next
     private TypeNode sentinel; // variable
@@ -8,11 +6,11 @@ public class LinkedListDeque<PlaceholderType> {
     private int size;
 
     private class TypeNode {
-        public PlaceholderType item;
+        public T item;
         public TypeNode next;
         public TypeNode prev;
 
-        public TypeNode(PlaceholderType i, TypeNode n, TypeNode p) { //constructor for typenode
+        public TypeNode(T i, TypeNode n, TypeNode p) { //constructor for typenode
             item = i;
             next = n;
             prev = p;
@@ -20,19 +18,19 @@ public class LinkedListDeque<PlaceholderType> {
     }
 
     public LinkedListDeque() { // constructor for deque
-        sentinel = new TypeNode( null, null, null);
-        lastSentinel = new TypeNode( null, null, sentinel);
+        sentinel = new TypeNode(null, null, null);
+        lastSentinel = new TypeNode(null, null, sentinel);
         sentinel.next = lastSentinel;
 
         size = 0;
     }
 
-    public PlaceholderType getRecursive(int index) {
+    public T getRecursive(int index) {
         TypeNode currentNode = sentinel.next;
         return getRecursiveHelper(currentNode, index);
     }
 
-    private PlaceholderType getRecursiveHelper(TypeNode currentNode, int currentIndex) {
+    private T getRecursiveHelper(TypeNode currentNode, int currentIndex) {
         if (currentIndex < 0 || currentIndex > size || currentNode == null) {
             return null;
         } else if (currentIndex == 0) {
@@ -41,24 +39,25 @@ public class LinkedListDeque<PlaceholderType> {
         return getRecursiveHelper(currentNode.next, currentIndex - 1);
     }
 
-    public void addFirst(PlaceholderType x) {
+    public void addFirst(T x) {
         // adds x to the front of the list
         sentinel.next = new TypeNode(x, sentinel.next, sentinel);
         size += 1;
     }
 
-    public void addLast(PlaceholderType x) {
+    public void addLast(T x) {
         // add an item to the end of a list
         size += 1;
 
-        lastSentinel.prev = new TypeNode(x,lastSentinel, lastSentinel.prev);
+        lastSentinel.prev = new TypeNode(x, lastSentinel, lastSentinel.prev);
     }
-    public PlaceholderType getFirst() {
+
+    public T getFirst() {
         // returns the first item in the list
         return sentinel.next.item;
     }
 
-    public PlaceholderType removeFirst() {
+    public T removeFirst() {
         if (size == 0) {
             return null;
         }
@@ -69,7 +68,7 @@ public class LinkedListDeque<PlaceholderType> {
         return removedNode.item;
     }
 
-    public PlaceholderType removeLast() {
+    public T removeLast() {
         if (size == 0) {
             return null;
         }
@@ -80,7 +79,7 @@ public class LinkedListDeque<PlaceholderType> {
         return removedNode.item;
     }
 
-    public PlaceholderType get(int index) {
+    public T get(int index) {
         TypeNode currentNode = sentinel.next;
         if (index >= size) {
             return null;

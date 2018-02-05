@@ -1,18 +1,18 @@
 
-public class ArrayDeque<PlaceholderType> {
+public class ArrayDeque<T> {
     // placeholderType allows us to not immediately define type as int or str.
     private int size;
     private int firstIndex;
     private int lastIndex;
-    PlaceholderType[] myArrayDeque;
+    private T[] myArrayDeque;
 
     public ArrayDeque() { // constructor for ArrayDeque
-        myArrayDeque = (PlaceholderType[]) new Object[8];
+        myArrayDeque = (T[]) new Object[8];
         firstIndex = 0;
         lastIndex = 0;
     }
 
-    public void addFirst(PlaceholderType x) {
+    public void addFirst(T x) {
         if (size == 0) {
             firstIndex = 0;
             lastIndex = 0;
@@ -32,7 +32,7 @@ public class ArrayDeque<PlaceholderType> {
 
     }
 
-    public void addLast(PlaceholderType x) {
+    public void addLast(T x) {
         if (size == 0) {
             firstIndex = 0;
             lastIndex = 0;
@@ -51,7 +51,7 @@ public class ArrayDeque<PlaceholderType> {
         size++;
     }
 
-    public PlaceholderType get(int index) {
+    public T get(int index) {
         return myArrayDeque[(firstIndex + index) % myArrayDeque.length];
     }
 
@@ -69,8 +69,8 @@ public class ArrayDeque<PlaceholderType> {
         }
     }
 
-    public PlaceholderType removeFirst() {
-        PlaceholderType removedNode = myArrayDeque[firstIndex];
+    public T removeFirst() {
+        T removedNode = myArrayDeque[firstIndex];
         myArrayDeque[firstIndex] = null;
         if (firstIndex == myArrayDeque.length - 1) {
             firstIndex = 0;
@@ -84,8 +84,8 @@ public class ArrayDeque<PlaceholderType> {
         return removedNode;
     }
 
-    public PlaceholderType removeLast() {
-        PlaceholderType removedNode = myArrayDeque[lastIndex];
+    public T removeLast() {
+        T removedNode = myArrayDeque[lastIndex];
         myArrayDeque[lastIndex] = null;
         if (lastIndex == 0) {
             lastIndex = myArrayDeque.length - 1;
@@ -99,8 +99,8 @@ public class ArrayDeque<PlaceholderType> {
         return removedNode;
     }
 
-    public void resizeUp() {
-        PlaceholderType[] resizedArray = (PlaceholderType[]) new Object[myArrayDeque.length * 2];
+    private void resizeUp() {
+        T[] resizedArray = (T[]) new Object[myArrayDeque.length * 2];
         // copy array into new array
         int sizeOfFirstCopy = myArrayDeque.length - firstIndex;
         System.arraycopy(myArrayDeque, firstIndex, resizedArray, 0, sizeOfFirstCopy);
@@ -110,8 +110,8 @@ public class ArrayDeque<PlaceholderType> {
         lastIndex = size - 1;
     }
 
-    public void resizeDown() {
-        PlaceholderType[] resizedArray = (PlaceholderType[]) new Object[myArrayDeque.length / 2];
+    private void resizeDown() {
+        T[] resizedArray = (T[]) new Object[myArrayDeque.length / 2];
 //        int sizeOfFirstCopy = myArrayDeque.length - firstIndex;
         if (lastIndex < firstIndex) {
             int sizeOfFirstCopy = myArrayDeque.length - firstIndex;
