@@ -6,9 +6,9 @@ public class LinkedListDeque<T> {
     private int size;
 
     private class TypeNode {
-        public T item;
-        public TypeNode next;
-        public TypeNode prev;
+        private T item;
+        private TypeNode next;
+        private TypeNode prev;
 
         public TypeNode(T i, TypeNode n, TypeNode p) { //constructor for typenode
             item = i;
@@ -42,19 +42,16 @@ public class LinkedListDeque<T> {
     public void addFirst(T x) {
         // adds x to the front of the list
         sentinel.next = new TypeNode(x, sentinel.next, sentinel);
+        sentinel.next.next.prev = sentinel.next;
         size += 1;
     }
 
     public void addLast(T x) {
         // add an item to the end of a list
         size += 1;
-
-        lastSentinel.prev = new TypeNode(x, lastSentinel, lastSentinel.prev);
-    }
-
-    public T getFirst() {
-        // returns the first item in the list
-        return sentinel.next.item;
+        TypeNode newNode = new TypeNode(x, lastSentinel, lastSentinel.prev);
+        lastSentinel.prev = newNode;
+        newNode.prev.next = lastSentinel;
     }
 
     public T removeFirst() {
@@ -115,12 +112,4 @@ public class LinkedListDeque<T> {
 
         }
     }
-
-    public static void main(String[] args) {
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
-        lld1.addFirst(10);
-        lld1.removeFirst();
-        lld1.size();
-    }
-
 }

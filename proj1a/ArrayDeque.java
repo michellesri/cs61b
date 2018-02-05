@@ -17,6 +17,7 @@ public class ArrayDeque<T> {
             firstIndex = 0;
             lastIndex = 0;
             myArrayDeque[0] = x;
+            size++;
             return;
         }
         if (size == myArrayDeque.length) {
@@ -29,7 +30,6 @@ public class ArrayDeque<T> {
         }
         myArrayDeque[firstIndex] = x;
         size++;
-
     }
 
     public void addLast(T x) {
@@ -37,6 +37,7 @@ public class ArrayDeque<T> {
             firstIndex = 0;
             lastIndex = 0;
             myArrayDeque[0] = x;
+            size++;
             return;
         }
         if (size == myArrayDeque.length) {
@@ -78,6 +79,10 @@ public class ArrayDeque<T> {
             firstIndex++;
         }
         size--;
+        if (size == 0) {
+            firstIndex = 0;
+            lastIndex = 0;
+        }
         if (size < myArrayDeque.length / 4) {
             resizeDown();
         }
@@ -93,6 +98,10 @@ public class ArrayDeque<T> {
             lastIndex--;
         }
         size--;
+        if (size == 0) {
+            firstIndex = 0;
+            lastIndex = 0;
+        }
         if (size < myArrayDeque.length / 4) {
             resizeDown();
         }
@@ -116,7 +125,8 @@ public class ArrayDeque<T> {
         if (lastIndex < firstIndex) {
             int sizeOfFirstCopy = myArrayDeque.length - firstIndex;
             System.arraycopy(myArrayDeque, firstIndex, resizedArray, 0, sizeOfFirstCopy);
-            System.arraycopy(myArrayDeque, 0, resizedArray, sizeOfFirstCopy, size - sizeOfFirstCopy);
+            System.arraycopy(myArrayDeque, 0, resizedArray, sizeOfFirstCopy,
+                    size - sizeOfFirstCopy);
 
         } else {
             System.arraycopy(myArrayDeque, firstIndex, resizedArray, 0, size);
@@ -127,11 +137,3 @@ public class ArrayDeque<T> {
     }
 
 }
-
-// create a generic array with size 8 full of nulls
-// array is circular
-// when the front of the array is full, the addFirst gets added to the last
-
-// when the whole array is full, resize
-
-// keep track of the index of first and last
