@@ -10,4 +10,3 @@ public class HorribleSteve {
     }
 }
 
-// Flik.isSameNumber doesn't think that 128 (i) and 128 (j) are the same??
