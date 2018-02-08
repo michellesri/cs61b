@@ -112,5 +112,6 @@ public class LinkedListDeque<T> {
             currentNode = currentNode.next;
 
         }
+        System.out.println();
     }
 }
