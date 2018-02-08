@@ -18,13 +18,8 @@ public class SLList<PlaceholderType> {
   }
 
 
-//  public SLList() { // constructor for empty list
-//    sentinel = new StuffNode(null, null);
-//    size = 0;
-//  }
-
-  public SLList(PlaceholderType x) { // constructor
-    sentinel = new StuffNode( x, null);
+  public SLList() { // constructor
+    sentinel = new StuffNode( null, null);
     size = 0;
   }
 
@@ -40,31 +35,31 @@ public class SLList<PlaceholderType> {
     return sentinel.next.item;
   }
 
-//  public int sizeIterative() {
-//    int counter = 0;
-//    StuffNode current = first;
-//
-//    while (current != null) {
-//      counter++;
-//      current = current.next;
-//    }
-//    return counter;
-//  }
-
-
-
   public int size() {
     return size;
+  }
+
+  public PlaceholderType get(int i) {
+    int counter = 0;
+    StuffNode current = sentinel.next;
+    while (counter != i) {
+      counter++;
+      current = current.next;
+    }
+    return current.item;
   }
 
 
   public void addLast(PlaceholderType x) {
   // add an item to the end of a list
-    size += 1;
-
-    last.next = new StuffNode(x,null);
-    last = last.next;
-
+      if (size <= 0) {
+          sentinel.next = new StuffNode(x, null);
+          last = sentinel.next;
+      } else {
+          last.next = new StuffNode(x,null);
+          last = last.next;
+          size += 1;
+      }
   }
 
 //  public static void main(String[] args) {

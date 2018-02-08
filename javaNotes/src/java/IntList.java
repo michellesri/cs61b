@@ -53,7 +53,7 @@ public class IntList {
         return null;
     }
 
-    public static IntList dincrList(IntList L, int x) {
-        // returns a new IntList similar to L, but with all values decremented by x.
-    }
+//    public static IntList dincrList(IntList L, int x) {
+//        // returns a new IntList similar to L, but with all values decremented by x.
+//    }
 }

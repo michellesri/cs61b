@@ -12,6 +12,6 @@ public class Dog {
             System.out.println("bark. bark.");
         } else {
             System.out.println("woof!");
-        }    
+        }
     }
 }
