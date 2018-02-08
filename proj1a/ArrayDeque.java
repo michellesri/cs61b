@@ -6,8 +6,10 @@ public class ArrayDeque<T> {
     private int lastIndex;
     private T[] myArrayDeque;
 
+    private static final int START_SIZE = 8;
+
     public ArrayDeque() { // constructor for ArrayDeque
-        myArrayDeque = (T[]) new Object[8];
+        myArrayDeque = (T[]) new Object[START_SIZE];
         firstIndex = 0;
         lastIndex = 0;
     }
