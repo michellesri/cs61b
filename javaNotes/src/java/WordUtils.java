@@ -1,6 +1,6 @@
 public class WordUtils {
     // returns the length of the longest word
-    public static String longest(AList <String> list) {
+    public static String longest(ListInterface <String> list) {
         int maxDex = 0;
         for (int i = 0; i < list.size(); i++) {
             String longestString = list.get(maxDex);

@@ -1,6 +1,6 @@
 // SLList - a list of integers
 
-public class SLList<PlaceholderType> {
+public class SLList<PlaceholderType> implements ListInterface<PlaceholderType>{
   // placeholderType allows us to not immediately define type as int or str.
   // the first item (if it exists) is at sentinel.next
   private StuffNode sentinel; // variable
@@ -49,6 +49,21 @@ public class SLList<PlaceholderType> {
     return current.item;
   }
 
+  public void insert(PlaceholderType x, int position) {
+      int counter = 0;
+      StuffNode current = sentinel.next;
+
+      if (current == null) {
+          sentinel.next = new StuffNode(x, null);
+      }
+      while (counter < position) {
+          current = current.next;
+      }
+      StuffNode saved = current.next;
+      current.next = new StuffNode(x, saved);
+  }
+
+
 
   public void addLast(PlaceholderType x) {
   // add an item to the end of a list
@@ -60,6 +75,25 @@ public class SLList<PlaceholderType> {
           last = last.next;
           size += 1;
       }
+  }
+
+  public PlaceholderType removeLast() {
+      StuffNode current = sentinel.next;
+
+      if (size <= 0) {
+          return null;
+      }
+
+      while (current.next != last) {
+          current = current.next;
+      }
+      StuffNode saved = current.next;
+      current.next = null;
+      return saved.item;
+  }
+
+  public PlaceholderType getLast() {
+      return last.item;
   }
 
 //  public static void main(String[] args) {

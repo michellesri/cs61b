@@ -2,16 +2,7 @@
  *  @author Josh Hug
  */
 
-// index:  0  1
-// items: [5, 9, 0...]
-    // size: 2
-
-    //invariants: things that are always true about our data structure
-    // addlast: the next item we want to add will go into position size
-    // the num of items in the list should be size
-
-    // getlast: the item we want to return is in position size - 1
-public class AList<Item> {
+public class AList<Item> implements ListInterface<Item>{
     private Item[] items;
     private int size;
 
@@ -62,5 +53,23 @@ public class AList<Item> {
         items[size - 1] = null;
         size--;
         return x;
+    }
+
+    // inserts item into given position
+    public void insert(Item x, int position) {
+        Item[] newItems = (Item[]) new Object[items.length + 1];
+
+        System.arraycopy(items, 0, newItems, 0, position);
+        items = newItems;
+    }
+
+    // inserts item at the front
+    public void addFirst(Item x) {
+        insert(x, 0);
+    }
+
+    // gets an item from the front
+    public Item getFirst() {
+        return get(0);
     }
 } 
