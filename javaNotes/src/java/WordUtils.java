@@ -13,11 +13,4 @@ public class WordUtils {
         return list.get(maxDex);
     }
 
-    public static void main(String[] args) {
-        AList<String> someList = new AList<>();
-        someList.addLast("elk");
-        someList.addLast("are");
-        someList.addLast("watching");
-        System.out.println(longest(someList));
-    }
 }

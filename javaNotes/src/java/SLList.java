@@ -67,14 +67,16 @@ public class SLList<PlaceholderType> implements ListInterface<PlaceholderType>{
 
   public void addLast(PlaceholderType x) {
   // add an item to the end of a list
+      StuffNode newNode = new StuffNode(x,null);
+
       if (size <= 0) {
-          sentinel.next = new StuffNode(x, null);
+          sentinel.next = newNode;
           last = sentinel.next;
       } else {
-          last.next = new StuffNode(x,null);
+          last.next = newNode;
           last = last.next;
-          size += 1;
       }
+      size++;
   }
 
   public PlaceholderType removeLast() {
@@ -96,16 +98,20 @@ public class SLList<PlaceholderType> implements ListInterface<PlaceholderType>{
       return last.item;
   }
 
-//  public static void main(String[] args) {
-//    // creates a list of one integer, 10.
-//    SLList L = new SLList();
-//    L.addFirst(10);
-//    L.addFirst(5);
-//    L.addLast(20);
-//    System.out.println(L.sizeIterative());
-//
-//    System.out.println(L.getFirst()); //should return 5
-//  }
+  @Override
+    public void print() {
+      System.out.println("blahblah");
+      for (StuffNode p = sentinel.next; p != null; p = p.next) {
+          System.out.print(p.item + " ");
+      }
+  }
+
+    public void insertFive(PlaceholderType x1, PlaceholderType x2, PlaceholderType x3) {
+        insert(x1, 0);
+        insert(x2, 1);
+        insert(x3, 2);
+    }
+
 
 
 

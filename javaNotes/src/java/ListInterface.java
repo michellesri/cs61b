@@ -22,4 +22,11 @@ public interface ListInterface<Item>{
 
     /** gets an item from the front */
     public Item getFirst();
+
+    default public void print() {
+        for (int i = 0; i < size(); i++) {
+            System.out.print(get(i) + " ");
+        }
+        System.out.println();
+    }
 }

@@ -20,6 +20,7 @@ public class AList<Item> implements ListInterface<Item>{
         items = a;
     }
 
+    @Override
     /** Inserts X into the back of the list. */
     public void addLast(Item x) {
         if (size == items.length) {
@@ -29,17 +30,21 @@ public class AList<Item> implements ListInterface<Item>{
         size++;
     }
 
+    @Override
     /** Returns the item from the back of the list. */
     public Item getLast() {
 
         return items[size - 1];
     }
+
+    @Override
     /** Gets the ith item in the list (0 is the front). */
     public Item get(int i) {
 
         return items[i];
     }
 
+    @Override
     /** Returns the number of items in the list. */
     public int size() {
 
@@ -55,6 +60,7 @@ public class AList<Item> implements ListInterface<Item>{
         return x;
     }
 
+    @Override
     // inserts item into given position
     public void insert(Item x, int position) {
         Item[] newItems = (Item[]) new Object[items.length + 1];
@@ -63,11 +69,19 @@ public class AList<Item> implements ListInterface<Item>{
         items = newItems;
     }
 
+    public void insertFive(Item x1, Item x2, Item x3) {
+        insert(x1, 0);
+        insert(x2, 1);
+        insert(x3, 2);
+    }
+
+    @Override
     // inserts item at the front
     public void addFirst(Item x) {
         insert(x, 0);
     }
 
+    @Override
     // gets an item from the front
     public Item getFirst() {
         return get(0);
