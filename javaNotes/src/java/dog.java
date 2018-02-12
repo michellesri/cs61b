@@ -1,17 +1,22 @@
-public class Dog {
-    public int weightInPounds;
+public class Dog implements OurComparable{
+    private String name;
+    private int size;
 
-    public Dog(int w) {
-        weightInPounds = w;
+    public Dog(String n, int s) {
+        name = n;
+        size = s;
     }
 
-    public void makeNoise() {
-        if (weightInPounds < 10) {
-            System.out.println("yipyipyip!");
-        } else if (weightInPounds < 30) {
-            System.out.println("bark. bark.");
-        } else {
-            System.out.println("woof!");
-        }
+    public void bark() {
+        System.out.println(name + " says: bark");
     }
+
+    public int compareTo(Object o) {
+        // returns -1 if this dog is less than the dog pointed at by o...
+        Dog uddaDog = (Dog) o;
+
+        return this.size - uddaDog.size;
+    }
+
+
 }
