@@ -1,5 +1,5 @@
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T>{
     // placeholderType allows us to not immediately define type as int or str.
     private int size;
     private int firstIndex;
@@ -14,6 +14,7 @@ public class ArrayDeque<T> {
         lastIndex = 0;
     }
 
+    @Override
     public void addFirst(T x) {
         if (size == 0) {
             firstIndex = 0;
@@ -34,6 +35,7 @@ public class ArrayDeque<T> {
         size++;
     }
 
+    @Override
     public void addLast(T x) {
         if (size == 0) {
             firstIndex = 0;
@@ -54,14 +56,17 @@ public class ArrayDeque<T> {
         size++;
     }
 
+    @Override
     public T get(int index) {
         return myArrayDeque[(firstIndex + index) % myArrayDeque.length];
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    @Override
     public int size() {
         if (size <= 0) {
             return 0;
@@ -69,12 +74,14 @@ public class ArrayDeque<T> {
         return size;
     }
 
+    @Override
     public void printDeque() {
         for (int i = 0; i < myArrayDeque.length; i++) {
             System.out.print(myArrayDeque[i] + " ");
         }
     }
 
+    @Override
     public T removeFirst() {
         if (size == 0) {
             return null;
@@ -97,6 +104,7 @@ public class ArrayDeque<T> {
         return removedNode;
     }
 
+    @Override
     public T removeLast() {
         if (size == 0) {
             return null;

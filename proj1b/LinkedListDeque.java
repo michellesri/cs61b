@@ -1,4 +1,4 @@
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T>{
     // placeholderType allows us to not immediately define type as int or str.
     // the first item (if it exists) is at sentinel.next
     private TypeNode sentinel; // variable
@@ -39,6 +39,7 @@ public class LinkedListDeque<T> {
         return getRecursiveHelper(currentNode.next, currentIndex - 1);
     }
 
+    @Override
     public void addFirst(T x) {
         // adds x to the front of the list
         TypeNode newNode = new TypeNode(x, sentinel.next, sentinel);
@@ -47,6 +48,7 @@ public class LinkedListDeque<T> {
         size += 1;
     }
 
+    @Override
     public void addLast(T x) {
         // add an item to the end of a list
         size += 1;
@@ -55,6 +57,7 @@ public class LinkedListDeque<T> {
         newNode.prev.next = newNode;
     }
 
+    @Override
     public T removeFirst() {
         if (size == 0) {
             return null;
@@ -66,6 +69,7 @@ public class LinkedListDeque<T> {
         return removedNode.item;
     }
 
+    @Override
     public T removeLast() {
         if (size == 0) {
             return null;
@@ -77,6 +81,7 @@ public class LinkedListDeque<T> {
         return removedNode.item;
     }
 
+    @Override
     public T get(int index) {
         TypeNode currentNode = sentinel.next;
         if (index >= size) {
@@ -91,7 +96,7 @@ public class LinkedListDeque<T> {
 
 //    for getRecursive, make helper method that uses the nested class
 
-
+    @Override
     public int size() {
         if (size <= 0) {
             return 0;
@@ -99,11 +104,13 @@ public class LinkedListDeque<T> {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         // returns true if deque is empty, false otherwise
         return size == 0;
     }
 
+    @Override
     public void printDeque() {
 //      start from sentinel print the item by going through the list
         TypeNode currentNode = sentinel.next;
