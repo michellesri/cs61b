@@ -1,8 +1,6 @@
 // SLList - a list of integers
 
 public class SLList<PlaceholderType> implements ListInterface<PlaceholderType>{
-  // placeholderType allows us to not immediately define type as int or str.
-  // the first item (if it exists) is at sentinel.next
   private StuffNode sentinel; // variable
   private StuffNode last;
   private int size;
@@ -67,16 +65,23 @@ public class SLList<PlaceholderType> implements ListInterface<PlaceholderType>{
 
   public void addLast(PlaceholderType x) {
   // add an item to the end of a list
-      StuffNode newNode = new StuffNode(x,null);
-
-      if (size <= 0) {
-          sentinel.next = newNode;
-          last = sentinel.next;
-      } else {
-          last.next = newNode;
-          last = last.next;
-      }
+//      StuffNode newNode = new StuffNode(x,null);
+//
+//      if (size <= 0) {
+//          sentinel.next = newNode;
+//          last = sentinel.next;
+//      } else {
+//          last.next = newNode;
+//          last = last.next;
+//      }
       size++;
+      StuffNode p = sentinel;
+
+      while(p.next != null) {
+          p = p.next;
+      }
+      p.next = new StuffNode(x, null);
+
   }
 
   public PlaceholderType removeLast() {
@@ -95,6 +100,7 @@ public class SLList<PlaceholderType> implements ListInterface<PlaceholderType>{
   }
 
   public PlaceholderType getLast() {
+      StuffNode last = getLastNode();
       return last.item;
   }
 
@@ -106,13 +112,112 @@ public class SLList<PlaceholderType> implements ListInterface<PlaceholderType>{
       }
   }
 
+    private StuffNode getLastNode() {
+      StuffNode p = sentinel;
+
+      while(p.next != null) {
+          p = p.next;
+      }
+      return p;
+    }
+
     public void insertFive(PlaceholderType x1, PlaceholderType x2, PlaceholderType x3) {
         insert(x1, 0);
         insert(x2, 1);
         insert(x3, 2);
     }
-
-
+//
+//
+//public class SLList<Blorp> implements ListInterface<Blorp> {
+//    public class Node {
+//        public Blorp item;
+//        public Node next;
+//
+//        public Node(Blorp i, Node h) {
+//            item = i;
+//            next = h;
+//        }
+//    }
+//
+//    private Node sentinel;
+//    private int size;
+//
+//    public SLList() {
+//        size = 0;
+//        sentinel = new Node(null, null);
+//    }
+//
+//    public SLList(Blorp x) {
+//        size = 1;
+//        sentinel = new Node(null, null);
+//        sentinel.next = new Node(x, null);
+//    }
+//
+//    public void addFirst(Blorp x) {
+//        Node oldFrontNode = sentinel.next;
+//        Node newNode = new Node(x, oldFrontNode);
+//        sentinel.next = newNode;
+//        size++;
+//    }
+//
+//    public Blorp getFirst() {
+//        return sentinel.next.item;
+//    }
+//
+//    public void addLast(Blorp x) {
+//        size++;
+//        Node p = sentinel;
+//
+//        while(p.next != null) {
+//            p = p.next;
+//        }
+//
+//        p.next = new Node(x, null);
+//    }
+//
+//    private Node getLastNode() {
+//        Node p = sentinel;
+//
+//        while(p.next != null) {
+//            p = p.next;
+//        }
+//        return p;
+//    }
+//
+//    public Blorp removeLast() {
+//        Node back = getLastNode();
+//        if (back == sentinel) {
+//            return null;
+//        }
+//
+//        size--;
+//        Node p = sentinel;
+//
+//        while(p.next != back) {
+//            p = p.next;
+//        }
+//        p.next = null;
+//        return back.item;
+//    }
+//
+//    public int size() {
+//        return size;
+//    }
+//
+//    public void insert(Node x, int position) {
+//      int counter = 0;
+//      Node current = sentinel.next;
+//
+//      if (current == null) {
+//          sentinel.next = new Node(x, null);
+//      }
+//      while (counter < position) {
+//          current = current.next;
+//      }
+//      Node saved = current.next;
+//      current.next = new Node(x, saved);
+//  }
+//
 
 
 }
