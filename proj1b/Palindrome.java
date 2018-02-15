@@ -9,4 +9,15 @@ public class Palindrome {
         }
         return palindromeDeque;
     }
+
+    public boolean isPalindrome(String word) {
+        Deque palindromeDeque = wordToDeque(word);
+        int counter = palindromeDeque.size();
+        String builtString = "";
+
+        while (counter > 0) {
+            builtString += palindromeDeque.removeFirst();
+        }
+        return builtString == word;
+    }
 }
