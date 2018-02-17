@@ -38,7 +38,7 @@ public class Palindrome {
 
         while (tempWord.size() > 1) {
             if (!cc.equalChars(tempWord.removeFirst(), tempWord.removeLast())) {
-               return false;
+                return false;
             }
         }
         return true;

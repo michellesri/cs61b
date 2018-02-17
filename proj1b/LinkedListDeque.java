@@ -1,4 +1,4 @@
-public class LinkedListDeque<T> implements Deque<T>{
+public class LinkedListDeque<T> implements Deque<T> {
     // placeholderType allows us to not immediately define type as int or str.
     // the first item (if it exists) is at sentinel.next
     private TypeNode sentinel; // variable

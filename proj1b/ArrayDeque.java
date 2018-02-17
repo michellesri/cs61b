@@ -1,5 +1,5 @@
 
-public class ArrayDeque<T> implements Deque<T>{
+public class ArrayDeque<T> implements Deque<T> {
     // placeholderType allows us to not immediately define type as int or str.
     private int size;
     private int firstIndex;
