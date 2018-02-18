@@ -1,5 +1,3 @@
-import java.lang.*;
-
 public class OffByOne implements CharacterComparator {
 
     @Override
