@@ -1,6 +1,8 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestPalindrome {
     // You must use this palindrome, and not instantiate
@@ -33,8 +35,8 @@ public class TestPalindrome {
     public void testOffByOneCheck() {
         assertTrue(obo.equalChars('a', 'b'));
         assertTrue(obo.equalChars('r', 'q'));
-        assertTrue(obo.equalChars('a', 'a'));
 
+        assertFalse(obo.equalChars('a', 'a'));
         assertFalse(obo.equalChars('a', 'e'));
         assertFalse(obo.equalChars('z', 'a'));
     }
