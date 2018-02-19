@@ -1,12 +1,9 @@
 package byog.lab5;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
-import java.util.Random;
 
 /**
  * Draws a world consisting of hexagonal regions.
@@ -17,12 +14,29 @@ public class HexWorld {
     private static final int HEIGHT = 30;
 
     public static void addHexagon(TETile[][] world, int s, int positionX, int positionY) {
-//        int counter = 0;
 
-        drawLine(drawLine(world, s, positionX, positionY), s, positionX--, positionY--);
-//        positionX -= 1;
-//        positionY -= 1;
-//        counter++;
+        int x = positionX;
+        int y = positionY;
+        int size = s;
+
+        for (int i = 0; i < s; i++) {
+            drawLine(world, size, x, y);
+            if (i < s - 1) {
+                x -= 1;
+                y += 1;
+                size += 2;
+            } else {
+                y += 1;
+            }
+        }
+
+        for (int i = 0; i < s; i++) {
+            drawLine(world, size, x, y);
+            x += 1;
+            y += 1;
+            size -= 2;
+        }
+
 
     }
 
@@ -46,6 +60,8 @@ public class HexWorld {
         }
 
         addHexagon(world, 3, 10, 20);
+        addHexagon(world, 2, 5, 10);
+
         ter.renderFrame(world);
 
     }
