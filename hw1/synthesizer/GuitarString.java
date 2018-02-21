@@ -1,5 +1,3 @@
-// TODO: Make sure to make this class a part of the synthesizer package
-
 package synthesizer;
 
 import java.util.HashSet;
