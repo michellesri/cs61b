@@ -1,5 +1,6 @@
 package byog.lab6;
 
+import edu.princeton.cs.introcs.StdAudio;
 import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.Color;
@@ -76,7 +77,7 @@ public class MemoryGame {
     }
 
     public void flashSequence(String letters) {
-        //TODO: Display each character in letters, making sure to blank the screen between letters
+        //Display each character in letters, making sure to blank the screen between letters
         String[] lettersArr = letters.split("");
         for (String letter : lettersArr) {
             drawFrame(letter);
@@ -88,7 +89,14 @@ public class MemoryGame {
 
     public String solicitNCharsInput(int n) {
         //TODO: Read n letters of player input
-        return null;
+        String constructedString = "";
+        for (int i = 0; i < n; i++) {
+            StdDraw.hasNextKeyTyped();
+            constructedString += StdDraw.nextKeyTyped();
+            drawFrame(constructedString);
+
+        }
+        return constructedString;
     }
 
     public void startGame() {
