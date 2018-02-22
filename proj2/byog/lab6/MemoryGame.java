@@ -77,6 +77,13 @@ public class MemoryGame {
 
     public void flashSequence(String letters) {
         //TODO: Display each character in letters, making sure to blank the screen between letters
+        String[] lettersArr = letters.split("");
+        for (String letter : lettersArr) {
+            drawFrame(letter);
+            StdDraw.pause(1000);
+            StdDraw.clear();
+            StdDraw.pause(500);
+        }
     }
 
     public String solicitNCharsInput(int n) {
