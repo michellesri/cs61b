@@ -69,6 +69,10 @@ public class MemoryGame {
         StdDraw.clear();
         Font font = new Font("Arial", Font.BOLD, 30);
         StdDraw.setFont(font);
+        StdDraw.text(0.5, 0.5, s);
+        StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.show();
+
     }
 
     public void flashSequence(String letters) {
