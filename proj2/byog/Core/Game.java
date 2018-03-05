@@ -2,6 +2,8 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import byog.TileEngine.Tileset;
+
 
 public class Game {
     TERenderer ter = new TERenderer();
@@ -32,7 +34,44 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
-        TETile[][] finalWorldFrame = null;
+
+        TETile[][] finalWorldFrame = generateWorld();;
         return finalWorldFrame;
+    }
+
+    public static void addRoom(TETile[][] world, int s, int positionX, int positionY) {
+
+        int x = positionX;
+        int y = positionY;
+        int size = s;
+
+        for (int i = 0; i < s; i++) {
+            drawLine(world, size, x, y);
+            if (i < s - 1) {
+                x -= 1;
+                y += 1;
+            } else {
+                y += 1;
+            }
+        }
+    }
+
+    public static TETile[][] drawLine(TETile[][] world, int s, int positionX, int positionY) {
+        // helper function that draws one line given a position
+        for (int i = 0; i < s; i++) {
+            world[positionX + i][positionY] = Tileset.TREE;
+        }
+        return world;
+    }
+
+    public static TETile[][] generateWorld() {
+        // initialize tiles
+        TETile[][] world = new TETile[WIDTH][HEIGHT];
+        for (int x = 0; x < WIDTH; x += 1) {
+            for (int y = 0; y < HEIGHT; y += 1) {
+                world[x][y] = Tileset.GRASS;
+            }
+        }
+        return world;
     }
 }
