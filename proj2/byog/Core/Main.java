@@ -21,3 +21,6 @@ public class Main {
         }
     }
 }
+
+// make each room at least one size
+// think about hallways -- keep track of center points

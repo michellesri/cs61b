@@ -4,11 +4,15 @@ import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
 
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
+    public static final int WIDTH = 100;
     public static final int HEIGHT = 30;
 
     /**
@@ -26,6 +30,7 @@ public class Game {
      * world. However, the behavior is slightly different. After playing with "n123sss:q", the game
      * should save, and thus if we then called playWithInputString with the string "l", we'd expect
      * to get the exact same world back again, since this corresponds to loading the saved game.
+     *
      * @param input the input string to feed to your program
      * @return the 2D TETile[][] representing the state of the world
      */
@@ -34,44 +39,119 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
+        Random rand = new Random(200);
+        TETile[][] finalWorldFrame = generateWorld(rand);
 
-        TETile[][] finalWorldFrame = generateWorld();;
         return finalWorldFrame;
+
+
     }
 
-    public static void addRoom(TETile[][] world, int s, int positionX, int positionY) {
+//    public static void addRoom(TETile[][] world, int s, int positionX, int positionY) {
+//        int x = positionX;
+//        int y = positionY;
+//        int size = s;
+//
+//        for (int i = 0; i < s; i++) {
+//            drawLine(world, size, x, y);
+//            if (i < s - 1) {
+//                x -= 1;
+//                y += 1;
+//            } else {
+//                y += 1;
+//            }
+//        }
+//    }
 
-        int x = positionX;
-        int y = positionY;
-        int size = s;
+//    public static TETile[][] drawLine(TETile[][] world, int s, int positionX, int positionY) {
+//        // helper function that draws one line given a position
+//        for (int i = 0; i < s; i++) {
+//            world[positionX + i][positionY] = Tileset.TREE;
+//        }
+//        return world;
+//    }
 
-        for (int i = 0; i < s; i++) {
-            drawLine(world, size, x, y);
-            if (i < s - 1) {
-                x -= 1;
-                y += 1;
-            } else {
-                y += 1;
-            }
-        }
-    }
+    public static TETile[][] generateWorld(Random rand) {
 
-    public static TETile[][] drawLine(TETile[][] world, int s, int positionX, int positionY) {
-        // helper function that draws one line given a position
-        for (int i = 0; i < s; i++) {
-            world[positionX + i][positionY] = Tileset.TREE;
-        }
-        return world;
-    }
-
-    public static TETile[][] generateWorld() {
+        int roomNum = rand.nextInt(20);
+        Set<RectangularRoom> existingRooms = new HashSet<>();
         // initialize tiles
         TETile[][] world = new TETile[WIDTH][HEIGHT];
         for (int x = 0; x < WIDTH; x += 1) {
             for (int y = 0; y < HEIGHT; y += 1) {
-                world[x][y] = Tileset.GRASS;
+                world[x][y] = Tileset.NOTHING;
             }
         }
+
+        while (existingRooms.size() < roomNum) {
+            RectangularRoom newRoom = RectangularRoom.generateRoom(rand, HEIGHT, WIDTH);
+
+            if (checkRoomAgainstExistingRooms(world, newRoom, existingRooms)) {
+                // if the room doesn't overlap, then we add the room.
+                existingRooms.add(newRoom);
+            }
+        }
+
+        for (RectangularRoom room : existingRooms) {
+            insertRoomToWorld(world, room);
+        }
+
         return world;
     }
+
+    public static boolean checkRoomAgainstExistingRooms(TETile[][] world, RectangularRoom newlyGeneratedRoom,
+                                                     Set<RectangularRoom> existingRooms) {
+        // returns true if the room already exists. later we need to make a new room.
+        for (RectangularRoom room : existingRooms) {
+            if (roomOverlapCheck(world, newlyGeneratedRoom, room)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void insertRoomToWorld(TETile[][] world, RectangularRoom newRoom) {
+        for (int x = -1; x < newRoom.width + 1; x += 1) {
+            for (int y = -1; y < newRoom.height + 1; y += 1) {
+                world[newRoom.pos.x + x][newRoom.pos.y + y] = Tileset.TREE;
+            }
+        }
+
+        for (int x = 0; x < newRoom.width; x += 1) {
+            for (int y = 0; y < newRoom.height; y+= 1) {
+                world[newRoom.pos.x + x][newRoom.pos.y + y] = Tileset.FLOOR;
+
+            }
+        }
+    }
+
+    public static boolean roomOverlapCheck(TETile[][] world, RectangularRoom room1, RectangularRoom room2) {
+        // returns true if rooms overlap
+
+        int room1startX = room1.pos.x;
+        int room1endX = room1.pos.x + room1.width;
+
+        int room2startX = room2.pos.x;
+        int room2endX = room2.pos.x + room2.width;
+
+        int room1startY = room1.pos.y;
+        int room1endY = room1.pos.y + room1.width;
+
+        int room2startY = room2.pos.y;
+        int room2endY = room2.pos.y + room2.width;
+
+        for (int x = room1startX; x < room1endX; x += 1) {
+            if (x < room2endX && x > room2startX) {
+                for (int y = room1startY; y < room1endY; y += 1) {
+                    if (y < room2endY && y > room2startY) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
 }
