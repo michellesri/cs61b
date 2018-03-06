@@ -47,30 +47,6 @@ public class Game {
 
     }
 
-//    public static void addRoom(TETile[][] world, int s, int positionX, int positionY) {
-//        int x = positionX;
-//        int y = positionY;
-//        int size = s;
-//
-//        for (int i = 0; i < s; i++) {
-//            drawLine(world, size, x, y);
-//            if (i < s - 1) {
-//                x -= 1;
-//                y += 1;
-//            } else {
-//                y += 1;
-//            }
-//        }
-//    }
-
-//    public static TETile[][] drawLine(TETile[][] world, int s, int positionX, int positionY) {
-//        // helper function that draws one line given a position
-//        for (int i = 0; i < s; i++) {
-//            world[positionX + i][positionY] = Tileset.TREE;
-//        }
-//        return world;
-//    }
-
     public static TETile[][] generateWorld(Random rand) {
 
         int roomNum = rand.nextInt(20);
@@ -101,7 +77,7 @@ public class Game {
 
     public static boolean checkRoomAgainstExistingRooms(TETile[][] world, RectangularRoom newlyGeneratedRoom,
                                                      Set<RectangularRoom> existingRooms) {
-        // returns true if the room already exists. later we need to make a new room.
+        // returns true if the room already exists. we need to make a new room.
         for (RectangularRoom room : existingRooms) {
             if (roomOverlapCheck(world, newlyGeneratedRoom, room)) {
                 return false;
@@ -111,14 +87,14 @@ public class Game {
     }
 
     public static void insertRoomToWorld(TETile[][] world, RectangularRoom newRoom) {
-        for (int x = -1; x < newRoom.width + 1; x += 1) {
-            for (int y = -1; y < newRoom.height + 1; y += 1) {
+        for (int x = 0; x < newRoom.width; x += 1) {
+            for (int y = 0; y < newRoom.height; y += 1) {
                 world[newRoom.pos.x + x][newRoom.pos.y + y] = Tileset.TREE;
             }
         }
 
-        for (int x = 0; x < newRoom.width; x += 1) {
-            for (int y = 0; y < newRoom.height; y+= 1) {
+        for (int x = 1; x < newRoom.width -1; x += 1) {
+            for (int y = 1; y < newRoom.height - 1; y+= 1) {
                 world[newRoom.pos.x + x][newRoom.pos.y + y] = Tileset.FLOOR;
 
             }
@@ -131,11 +107,11 @@ public class Game {
         int room1startX = room1.pos.x;
         int room1endX = room1.pos.x + room1.width;
 
-        int room2startX = room2.pos.x;
-        int room2endX = room2.pos.x + room2.width;
-
         int room1startY = room1.pos.y;
         int room1endY = room1.pos.y + room1.width;
+
+        int room2startX = room2.pos.x;
+        int room2endX = room2.pos.x + room2.width;
 
         int room2startY = room2.pos.y;
         int room2endY = room2.pos.y + room2.width;

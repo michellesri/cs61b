@@ -17,8 +17,8 @@ public class RectangularRoom {
     }
 
     public static RectangularRoom generateRoom(Random rand, int gameHeight, int gameWidth) {
-        int roomHeight = rand.nextInt(gameHeight / 4);
-        int roomWidth = rand.nextInt(gameWidth / 4);
+        int roomHeight = rand.nextInt(gameHeight / 4 - 3) + 3;
+        int roomWidth = rand.nextInt(gameWidth / 4 - 3) + 3;
 
         int positionX = rand.nextInt(gameWidth - roomWidth);
         int positionY = rand.nextInt(gameHeight - roomHeight);
