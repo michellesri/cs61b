@@ -68,9 +68,16 @@ public class Game {
             }
         }
 
-        for (RectangularRoom room : existingRooms) {
-            insertRoomToWorld(world, room);
-        }
+        Object[] myArr = existingRooms.toArray();
+        RectangularRoom room1 = (RectangularRoom) myArr[0];
+        RectangularRoom room2 = (RectangularRoom) myArr[1];
+        Hall hall = Hall.generateHorizontalHall(room2, room1);
+
+//        for (RectangularRoom room : existingRooms) {
+            insertRoomToWorld(world, room1);
+            insertRoomToWorld(world, room2);
+            insertHallToWorld(world, hall);
+//        }
 
         return world;
     }
@@ -96,6 +103,23 @@ public class Game {
         for (int x = 1; x < newRoom.width -1; x += 1) {
             for (int y = 1; y < newRoom.height - 1; y+= 1) {
                 world[newRoom.pos.x + x][newRoom.pos.y + y] = Tileset.FLOOR;
+
+            }
+        }
+    }
+
+    public static void insertHallToWorld(TETile[][] world, Hall newHall) {
+        for (int x = 0; x < newHall.width; x += 1) {
+            for (int y = 0; y < newHall.height; y += 1) {
+                world[newHall.pos.x + x][newHall.pos.y + y] = Tileset.LOCKED_DOOR;
+//                world[newHall.pos.x + x + 58][newHall.pos.y + y + 11] = Tileset.LOCKED_DOOR;
+
+            }
+        }
+
+        for (int x = 1; x < newHall.width -1; x += 1) {
+            for (int y = 1; y < newHall.height - 1; y+= 1) {
+                world[newHall.pos.x + x][newHall.pos.y + y] = Tileset.MOUNTAIN;
 
             }
         }
@@ -127,7 +151,5 @@ public class Game {
         }
         return false;
     }
-
-
 
 }
