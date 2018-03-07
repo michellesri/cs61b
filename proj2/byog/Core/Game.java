@@ -4,9 +4,7 @@ import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 
 public class Game {
@@ -49,8 +47,8 @@ public class Game {
 
     public static TETile[][] generateWorld(Random rand) {
 
-        int roomNum = rand.nextInt(20);
-        Set<RectangularRoom> existingRooms = new HashSet<>();
+        int roomNum = rand.nextInt(50);
+        List<RectangularRoom> existingRooms = new ArrayList<>();
         // initialize tiles
         TETile[][] world = new TETile[WIDTH][HEIGHT];
         for (int x = 0; x < WIDTH; x += 1) {
@@ -68,22 +66,33 @@ public class Game {
             }
         }
 
-        Object[] myArr = existingRooms.toArray();
-        RectangularRoom room1 = (RectangularRoom) myArr[0];
-        RectangularRoom room2 = (RectangularRoom) myArr[1];
-        Hall hall = Hall.generateHorizontalHall(room2, room1);
+        List<Hall> halls = new ArrayList<>();
 
-//        for (RectangularRoom room : existingRooms) {
-            insertRoomToWorld(world, room1);
-            insertRoomToWorld(world, room2);
+        for (int i = 0; i < existingRooms.size(); i += 1) {
+            RectangularRoom currentRoom = existingRooms.get(i);
+            RectangularRoom targetRoom;
+            if (i == existingRooms.size() - 1) {
+                targetRoom = existingRooms.get(0);
+            } else {
+                targetRoom = existingRooms.get(i + 1);
+            }
+
+            halls.addAll(Hall.generateHalls(rand, currentRoom, targetRoom));
+        }
+
+        for (RectangularRoom room : existingRooms) {
+            insertRoomToWorld(world, room);
+        }
+
+        for (Hall hall : halls) {
             insertHallToWorld(world, hall);
-//        }
+        }
 
         return world;
     }
 
     public static boolean checkRoomAgainstExistingRooms(TETile[][] world, RectangularRoom newlyGeneratedRoom,
-                                                     Set<RectangularRoom> existingRooms) {
+                                                     List<RectangularRoom> existingRooms) {
         // returns true if the room already exists. we need to make a new room.
         for (RectangularRoom room : existingRooms) {
             if (roomOverlapCheck(world, newlyGeneratedRoom, room)) {
@@ -109,20 +118,40 @@ public class Game {
     }
 
     public static void insertHallToWorld(TETile[][] world, Hall newHall) {
-        for (int x = 0; x < newHall.width; x += 1) {
-            for (int y = 0; y < newHall.height; y += 1) {
-                world[newHall.pos.x + x][newHall.pos.y + y] = Tileset.LOCKED_DOOR;
-//                world[newHall.pos.x + x + 58][newHall.pos.y + y + 11] = Tileset.LOCKED_DOOR;
-
+        if (newHall.isHorizontal) {
+            if (newHall.length < 0) {
+                for (int x = 0; x >= newHall.length; x -= 1) {
+                    setWall(world, newHall.pos.x + x, newHall.pos.y + 1);
+                    world[newHall.pos.x + x][newHall.pos.y] = Tileset.FLOOR;
+                    setWall(world, newHall.pos.x + x, newHall.pos.y - 1);
+                }
+            } else {
+                for (int x = 0; x <= newHall.length; x += 1) {
+                    setWall(world, newHall.pos.x + x, newHall.pos.y + 1);
+                    world[newHall.pos.x + x][newHall.pos.y] = Tileset.FLOOR;
+                    setWall(world, newHall.pos.x + x, newHall.pos.y - 1);
+                }
+            }
+        } else {
+            if (newHall.length < 0) {
+                for (int y = 0; y >= newHall.length; y -= 1) {
+                    setWall(world, newHall.pos.x + 1, newHall.pos.y + y);
+                    world[newHall.pos.x][newHall.pos.y + y] = Tileset.FLOOR;
+                    setWall(world, newHall.pos.x - 1, newHall.pos.y + y);
+                }
+            } else {
+                for (int y = 0; y <= newHall.length; y += 1) {
+                    setWall(world, newHall.pos.x + 1, newHall.pos.y + y);
+                    world[newHall.pos.x][newHall.pos.y + y] = Tileset.FLOOR;
+                    setWall(world, newHall.pos.x - 1, newHall.pos.y + y);
+                }
             }
         }
+    }
 
-        for (int x = 1; x < newHall.width -1; x += 1) {
-            for (int y = 1; y < newHall.height - 1; y+= 1) {
-                world[newHall.pos.x + x][newHall.pos.y + y] = Tileset.MOUNTAIN;
-
-            }
-        }
+    public static void setWall(TETile[][] world, int x, int y) {
+        if (world[x][y] == Tileset.FLOOR) return;
+        world[x][y] = Tileset.TREE;
     }
 
     public static boolean roomOverlapCheck(TETile[][] world, RectangularRoom room1, RectangularRoom room2) {
