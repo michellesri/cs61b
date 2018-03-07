@@ -1,20 +1,43 @@
 package byog.Core;
 
-public class Hall {
-    int height;
-    int width;
-    Position pos;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-    public Hall(int height, int width, Position position) {
-        this.height = height;
-        this.width = width;
+public class Hall {
+    Position pos;
+    boolean isHorizontal;
+    int length;
+
+    public Hall(Position position, boolean isHorizontal, int length) {
         this.pos = position;
+        this.isHorizontal = isHorizontal;
+        this.length = length;
     }
 
-    public static Hall generateHorizontalHall(RectangularRoom room1, RectangularRoom room2) {
-        int hallDistance = Math.abs(room1.roomCenter.x - room2.roomCenter.x);
-        Position startPosition = new Position(room1.roomCenter.x, room1.roomCenter.y);
-        return new Hall(1, hallDistance, startPosition);
+    public static List<Hall> generateHalls(Random rand, RectangularRoom room1, RectangularRoom room2) {
+        // return a list of halls that connects these two rooms
+
+        int room1PositionX = rand.nextInt(room1.width - 1) + room1.pos.x + 1;
+        int room1PositionY = rand.nextInt(room1.height - 1) + room1.pos.y + 1;
+
+        int room2PositionX = rand.nextInt(room2.width - 1) + room2.pos.x + 1;
+        int room2PositionY = rand.nextInt(room2.height - 1) + room2.pos.y + 1;
+
+        Position startPositionX = new Position(room1PositionX, room1PositionY);
+        int hallDistanceX = room2PositionX - room1PositionX;
+
+        Position startPositionY = new Position(room1PositionX + hallDistanceX, room1PositionY);
+        int hallDistanceY = room2PositionY - room1PositionY;
+
+        Hall horizontalHall = new Hall(startPositionX, true, hallDistanceX);
+        Hall verticalHall = new Hall(startPositionY, false, hallDistanceY);
+
+        List<Hall> hallList = new ArrayList<>();
+        hallList.add(horizontalHall);
+        hallList.add(verticalHall);
+
+        return hallList;
 
     }
 

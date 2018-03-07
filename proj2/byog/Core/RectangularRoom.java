@@ -9,13 +9,11 @@ public class RectangularRoom {
     int height;
     int width;
     Position pos;
-    Position roomCenter;
 
-    public RectangularRoom(int height, int width, Position pos, Position roomCenter) {
+    public RectangularRoom(int height, int width, Position pos) {
         this.height = height;
         this.width = width;
         this.pos = pos;
-        this.roomCenter = roomCenter;
     }
 
     public static RectangularRoom generateRoom(Random rand, int gameHeight, int gameWidth) {
@@ -27,9 +25,7 @@ public class RectangularRoom {
 
         Position newPosition = new Position(positionX, positionY);
 
-        Position roomCenter = new Position((roomWidth / 2) + positionX, (roomHeight / 2) + positionY);
-
-        RectangularRoom myRoom = new RectangularRoom(roomHeight, roomWidth, newPosition, roomCenter);
+        RectangularRoom myRoom = new RectangularRoom(roomHeight, roomWidth, newPosition);
 
         return myRoom;
     }
