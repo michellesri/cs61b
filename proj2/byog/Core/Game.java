@@ -15,22 +15,44 @@ public class Game {
     /* Feel free to change the width and height. */
     public static final int WIDTH = 100;
     public static final int HEIGHT = 30;
+    int savedSeed;
+    Player savedPlayer;
+
+    // seed used
+    // player position
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
 
-        StdDraw.setCanvasSize(40 * 16, 40 * 16);
         displayMainMenu();
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char currentKey = Character.toLowerCase(StdDraw.nextKeyTyped());
+                if (currentKey == 'n') { // new game
+                    startGame();
+                } else if (currentKey == 'l') { // load game
+                    loadGame();
+                } else if (currentKey == 'q') { // quit
+                    terminateGame();
+                } else {
+                    // please enter one of the keys
+                }
+            }
 
-        while (true) {}
+        }
 
         // TODO: save game here
     }
 
+    public void terminateGame() {
+        System.exit(0);
+    }
+
     public void startGame() {
-        Random rand = new Random(200);
+        int seed = 200;
+        Random rand = new Random(seed);
         ter.initialize(WIDTH, HEIGHT);
         // initialize tiles
         TETile[][] world = generateWorld(rand);
@@ -64,6 +86,48 @@ public class Game {
                 }
             }
         }
+        saveGame(player, seed);
+        displayMainMenu();
+    }
+
+    public void loadGame() {
+
+        Random rand = new Random(savedSeed);
+        ter.initialize(WIDTH, HEIGHT);
+        // initialize tiles
+        TETile[][] world = generateWorld(rand);
+
+
+        Player player = savedPlayer;
+        world[player.pos.x][player.pos.y] = Tileset.PLAYER;
+
+        ter.renderFrame(world);
+
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char currentKey = StdDraw.nextKeyTyped();
+                if (currentKey == ':') {
+                    while (!StdDraw.hasNextKeyTyped()) {
+                    }
+                    if (Character.toLowerCase(StdDraw.nextKeyTyped()) == 'q') {
+                        break;
+                    }
+                } else {
+                    world[player.pos.x][player.pos.y] = Tileset.FLOOR;
+                    player.movePlayer(currentKey, world, WIDTH, HEIGHT);
+
+                    world[player.pos.x][player.pos.y] = Tileset.PLAYER;
+                    ter.renderFrame(world);
+                }
+            }
+        }
+        saveGame(player, savedSeed);
+        displayMainMenu();
+    }
+
+    public void saveGame(Player player, int seed) {
+        savedPlayer = player;
+        savedSeed = seed;
     }
 
     public void displayMainMenu() {
