@@ -5,7 +5,9 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import edu.princeton.cs.introcs.StdDraw;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 
 public class Game {
@@ -19,8 +21,16 @@ public class Game {
      */
     public void playWithKeyboard() {
 
-        Random rand = new Random(200);
+        StdDraw.setCanvasSize(40 * 16, 40 * 16);
+        displayMainMenu();
 
+        while (true) {}
+
+        // TODO: save game here
+    }
+
+    public void startGame() {
+        Random rand = new Random(200);
         ter.initialize(WIDTH, HEIGHT);
         // initialize tiles
         TETile[][] world = generateWorld(rand);
@@ -38,19 +48,37 @@ public class Game {
 
         while (true) {
             if (StdDraw.hasNextKeyTyped()) {
-                System.out.println("run");
+                char currentKey = StdDraw.nextKeyTyped();
+                if (currentKey == ':') {
+                    while (!StdDraw.hasNextKeyTyped()) {
+                    }
+                    if (Character.toLowerCase(StdDraw.nextKeyTyped()) == 'q') {
+                        break;
+                    }
+                } else {
+                    world[player.pos.x][player.pos.y] = Tileset.FLOOR;
+                    player.movePlayer(currentKey, world, WIDTH, HEIGHT);
 
-//                movePlayer(char userInput, TETile[][] world, int worldWidth, int worldHeight)
-                world[player.pos.x][player.pos.y] = Tileset.FLOOR;
-                player.movePlayer(StdDraw.nextKeyTyped(), world, WIDTH, HEIGHT);
-
-                world[player.pos.x][player.pos.y] = Tileset.PLAYER;
-                ter.renderFrame(world);
-
+                    world[player.pos.x][player.pos.y] = Tileset.PLAYER;
+                    ter.renderFrame(world);
+                }
             }
         }
+    }
 
+    public void displayMainMenu() {
+        System.out.println(" in draw frame");
+        StdDraw.clear();
+        StdDraw.setXscale(0, WIDTH);
+        StdDraw.setYscale(0, HEIGHT);
+        Font font = new Font("Arial", Font.BOLD, 30);
+        StdDraw.setFont(font);
+        StdDraw.text(WIDTH/2, HEIGHT/2, "Quit (Q)");
+        StdDraw.text(WIDTH/2, HEIGHT/2 + HEIGHT/10, "Load Game (L)");
+        StdDraw.text(WIDTH/2, HEIGHT/2 + 2 * HEIGHT/10, "New Game (N)");
 
+        StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.show();
     }
 
     /**

@@ -71,7 +71,6 @@ public class MemoryGame {
         StdDraw.text(20, 20, s);
         StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.show();
-
     }
 
     public void flashSequence(String letters) {
