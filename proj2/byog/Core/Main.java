@@ -21,5 +21,3 @@ public class Main {
         }
     }
 }
-
-// think about hallways -- keep track of center points

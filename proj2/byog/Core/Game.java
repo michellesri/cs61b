@@ -17,6 +17,17 @@ public class Game {
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
+
+        Random rand = new Random(200);
+
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        // initialize tiles
+        TETile[][] world = generateWorld(rand);
+
+        ter.renderFrame(world);
+
+
     }
 
     /**
@@ -68,7 +79,7 @@ public class Game {
 
         List<Hall> halls = new ArrayList<>();
 
-        for (int i = 0; i < existingRooms.size(); i += 1) {
+        for (int i = 0; i < existingRooms.size(); i += 2) {
             RectangularRoom currentRoom = existingRooms.get(i);
             RectangularRoom targetRoom;
             if (i == existingRooms.size() - 1) {
