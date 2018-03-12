@@ -13,13 +13,22 @@ public class Player {
     public void movePlayer(char userInput, TETile[][] world, int worldWidth, int worldHeight) {
         userInput = Character.toLowerCase(userInput);
         if (userInput == 'w') {
-            if (worldHeight >= this.pos.y + 1) {
-                if (world[this.pos.x][this.pos.y + 1] == Tileset.FLOOR) {
-                    this.pos.y++;
-                }
+            if (isPositionMovable(this.pos.x, this.pos.y + 1, worldWidth, worldHeight, world)) {
+                this.pos.y++;
             }
-
-        } else if ()
+        } else if (userInput == 'a') {
+            if (isPositionMovable(this.pos.x - 1, this.pos.y, worldWidth, worldHeight, world)) {
+                this.pos.x--;
+            }
+        } else if (userInput == 's') {
+            if (isPositionMovable(this.pos.x, this.pos.y - 1, worldWidth, worldHeight, world)) {
+                this.pos.y--;
+            }
+        } else if (userInput == 'd') {
+            if (isPositionMovable(this.pos.x + 1, this.pos.y, worldWidth, worldHeight, world)) {
+                this.pos.x++;
+            }
+        }
     }
 
     public boolean isPositionMovable(int x, int y, int worldWidth, int worldHeight, TETile[][] world) {

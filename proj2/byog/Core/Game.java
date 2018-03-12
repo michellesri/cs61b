@@ -3,6 +3,7 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import edu.princeton.cs.introcs.StdDraw;
 
 import java.util.*;
 
@@ -20,12 +21,34 @@ public class Game {
 
         Random rand = new Random(200);
 
-        TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         // initialize tiles
         TETile[][] world = generateWorld(rand);
 
+        Position position = new Position(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
+        while (world[position.x][position.y] != Tileset.FLOOR) {
+            position = new Position(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
+        }
+
+        Player player = new Player(position);
+
+        world[player.pos.x][player.pos.y] = Tileset.PLAYER;
+
         ter.renderFrame(world);
+
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                System.out.println("run");
+
+//                movePlayer(char userInput, TETile[][] world, int worldWidth, int worldHeight)
+                world[player.pos.x][player.pos.y] = Tileset.FLOOR;
+                player.movePlayer(StdDraw.nextKeyTyped(), world, WIDTH, HEIGHT);
+
+                world[player.pos.x][player.pos.y] = Tileset.PLAYER;
+                ter.renderFrame(world);
+
+            }
+        }
 
 
     }
