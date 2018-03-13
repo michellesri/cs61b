@@ -15,6 +15,7 @@ public class Game {
     /* Feel free to change the width and height. */
     public static final int WIDTH = 100;
     public static final int HEIGHT = 30;
+    public boolean playingWithKeyboard = true;
     int savedSeed;
     Player savedPlayer;
 
@@ -27,24 +28,56 @@ public class Game {
     public void playWithKeyboard() {
 
         displayMainMenu();
-        while (true) {
+        while (playingWithKeyboard) {
             if (StdDraw.hasNextKeyTyped()) {
                 char currentKey = Character.toLowerCase(StdDraw.nextKeyTyped());
-                if (currentKey == 'n') { // new game
-                    startGame();
-                } else if (currentKey == 'l') { // load game
-                    loadGame();
-                } else if (currentKey == 'q') { // quit
-                    terminateGame();
-                } else {
-                    // please enter one of the keys
-                }
+                interpretMenuKeys(currentKey);
             }
-
         }
-
-        // TODO: save game here
     }
+
+    public void interpretMenuKeys(char input) {
+        if (input == 'n') { // new game
+            startGame();
+        } else if (input == 'l') { // load game
+            loadGame();
+        } else if (input == 'q') { // quit
+            terminateGame();
+        }
+    }
+
+    public int readSeed(String input) {
+        String[] inputs = input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+        return Integer.parseInt(inputs[1]); // return the seed
+    }
+
+    public String readUserMovements(String input) {
+        String[] inputs = input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+        return inputs[2];
+    }
+
+//    public boolean isValidInput(String input) {
+//        // returns true if userInput is valid
+//
+//        String[] inputs = input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)"); // make this lowercase
+//        int inputsLength = input.length();
+//
+//        if (inputsLength > 3) {
+//            return false;
+//        }
+//
+//        String firstInput = inputs[0];
+//        String secondInput = inputs[1];
+//        String thirdInput = inputs[2];
+//        if (firstInput.length() != 1 || !firstInput.equals('n') || !firstInput.equals('l') || !firstInput.equals('q')) {
+//            return false;
+//        } else if (!secondInput.matches("\\d")) { // check if there is a seed (at least one digit)
+//            return false;
+//        } else if (thirdInput.length() <= 0) { //third input needs to have commands
+//            return false;
+//        }
+//        return true;
+//    }
 
     public void terminateGame() {
         System.exit(0);
@@ -68,7 +101,7 @@ public class Game {
 
         ter.renderFrame(world);
 
-        while (true) {
+        while (playingWithKeyboard) {
             if (StdDraw.hasNextKeyTyped()) {
                 char currentKey = StdDraw.nextKeyTyped();
                 if (currentKey == ':') {
@@ -131,7 +164,6 @@ public class Game {
     }
 
     public void displayMainMenu() {
-        System.out.println(" in draw frame");
         StdDraw.clear();
         StdDraw.setXscale(0, WIDTH);
         StdDraw.setYscale(0, HEIGHT);
@@ -163,12 +195,22 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
+        input = input.toLowerCase();
+        char[] inputChars = input.toCharArray();
+
+        readUserInput(inputChars[0]);
+        readUserInput();
+
         Random rand = new Random(200);
         TETile[][] finalWorldFrame = generateWorld(rand);
 
         return finalWorldFrame;
+    }
 
-
+    public void readUserInput(char input) {
+        if (input == 'n') {
+            startGame();
+        }
     }
 
     public static TETile[][] generateWorld(Random rand) {
