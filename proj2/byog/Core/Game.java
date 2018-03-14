@@ -15,7 +15,7 @@ public class Game {
     /* Feel free to change the width and height. */
     public static final int WIDTH = 100;
     public static final int HEIGHT = 30;
-    public boolean playingWithKeyboard = true;
+    public boolean playingWithKeyboard;
     int savedSeed;
     Player savedPlayer;
 
@@ -26,6 +26,7 @@ public class Game {
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
+        playingWithKeyboard = true;
 
         displayMainMenu();
         while (playingWithKeyboard) {
@@ -43,7 +44,14 @@ public class Game {
             loadGame();
         } else if (input == 'q') { // quit
             terminateGame();
+        } else if (input == 's') { // user finished inputting seed. start game with this seed.
+
         }
+    }
+
+    public char readUserMenuSelection(String input) {
+        String[] inputs = input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+        return (inputs[0].charAt(0));
     }
 
     public int readSeed(String input) {
@@ -83,8 +91,53 @@ public class Game {
         System.exit(0);
     }
 
+    public int askUserForSeed() {
+        StdDraw.clear();
+        StdDraw.setXscale(0, WIDTH);
+        StdDraw.setYscale(0, HEIGHT);
+        Font font = new Font("Arial", Font.BOLD, 30);
+        StdDraw.setFont(font);
+        StdDraw.text(WIDTH/2, HEIGHT/2, "Please enter a seed");
+
+        StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.show();
+
+        String seed = "";
+        while (playingWithKeyboard) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char currentKey = Character.toLowerCase(StdDraw.nextKeyTyped());
+                if (currentKey == 's') {
+                    break;
+                }
+                seed += currentKey;
+            }
+        }
+        return Integer.parseInt(seed);
+    }
+
+    public void startGameWithSeed(int seed) {
+        Random rand = new Random(seed);
+
+    }
+
+    public Player createPlayer(Position pos) {
+        return new Player(pos);
+    }
+
+    public TETile[][] insertPlayerToWorld(TETile[][] world, Player player) {
+        world[player.pos.x][player.pos.y] = Tileset.PLAYER;
+
+        return world;
+    }
+
     public void startGame() {
         int seed = 200;
+
+        if (!playingWithKeyboard) {
+
+        } else { // we are playing with the keyboard
+
+        }
         Random rand = new Random(seed);
         ter.initialize(WIDTH, HEIGHT);
         // initialize tiles
@@ -195,22 +248,19 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
+        playingWithKeyboard = false;
         input = input.toLowerCase();
         char[] inputChars = input.toCharArray();
 
-        readUserInput(inputChars[0]);
-        readUserInput();
+        interpretMenuKeys(readUserMenuSelection(input));
 
-        Random rand = new Random(200);
+        int userSeed = readSeed(input);
+        String userMovements = readUserMovements(input);
+
+        Random rand = new Random(userSeed);
         TETile[][] finalWorldFrame = generateWorld(rand);
 
         return finalWorldFrame;
-    }
-
-    public void readUserInput(char input) {
-        if (input == 'n') {
-            startGame();
-        }
     }
 
     public static TETile[][] generateWorld(Random rand) {
