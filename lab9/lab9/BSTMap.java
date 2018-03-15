@@ -6,9 +6,9 @@ import java.util.Set;
 /**
  * Implementation of interface Map61B with BST as core data structure.
  *
- * @author Your name here
+ * @author Michelle
  */
-public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
+public class BSTMap<K extends Comparable<K>, V> implements lab9.Map61B<K, V> {
 
     private class Node {
         /* (K, V) pair stored in this Node. */
@@ -44,7 +44,17 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      *  or null if this map contains no mapping for the key.
      */
     private V getHelper(K key, Node p) {
-        throw new UnsupportedOperationException();
+        if (p == null) {
+            return null;
+        }
+        int compareValue = p.key.compareTo(key);
+        if (compareValue > 0) { //key is bigger than current node (p.key)
+            return getHelper(key, p.right);
+        } else if (compareValue < 0) {
+            return getHelper(key, p.left);
+        } else {
+            return p.value;
+        }
     }
 
     /** Returns the value to which the specified key is mapped, or null if this
@@ -52,7 +62,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        return getHelper(key, root);
     }
 
     /** Returns a BSTMap rooted in p with (KEY, VALUE) added as a key-value mapping.
@@ -66,8 +76,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      *  If it is already present, updates value to be VALUE.
      */
     @Override
-    public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+    public void put(K key, V value) { // check if key is already there. otherwise, increase size
+
     }
 
     /* Returns the number of key-value mappings in this map. */
