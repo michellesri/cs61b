@@ -48,7 +48,7 @@ public class BSTMap<K extends Comparable<K>, V> implements lab9.Map61B<K, V> {
             return null;
         }
         int compareValue = p.key.compareTo(key);
-        if (compareValue > 0) { //key is bigger than current node (p.key)
+        if (compareValue > 0) { //target key is bigger than current node (p.key)
             return getHelper(key, p.right);
         } else if (compareValue < 0) {
             return getHelper(key, p.left);
@@ -69,7 +69,26 @@ public class BSTMap<K extends Comparable<K>, V> implements lab9.Map61B<K, V> {
       * Or if p is null, it returns a one node BSTMap containing (KEY, VALUE).
      */
     private Node putHelper(K key, V value, Node p) {
-        throw new UnsupportedOperationException();
+        if (p == null) {
+            return null;
+        }
+        int compareValue = p.key.compareTo(key);
+        if (compareValue > 0) {
+            if (p.right != null) {
+                return putHelper(key, value, p.right);
+            } else {
+                p.right = new Node(key, value);
+            }
+        } else if (compareValue < 0) {
+            if (p.left != null) {
+                return putHelper(key, value, p.left);
+            } else {
+                p.left = new Node(key, value);
+            }
+        } else {
+            p.value = value;
+        }
+        return p;
     }
 
     /** Inserts the key KEY
@@ -77,13 +96,19 @@ public class BSTMap<K extends Comparable<K>, V> implements lab9.Map61B<K, V> {
      */
     @Override
     public void put(K key, V value) { // check if key is already there. otherwise, increase size
+        if (get(key) != null) {
+            return;
+        } else {
+            putHelper(key, value, root);
+            size++;
+        }
 
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
