@@ -84,6 +84,7 @@ public class BSTMap<K extends Comparable<K>, V> implements lab9.Map61B<K, V> {
                 return putHelper(key, value, p.left);
             } else {
                 p.left = new Node(key, value);
+                size++;
             }
         } else {
             p.value = value;
@@ -96,13 +97,12 @@ public class BSTMap<K extends Comparable<K>, V> implements lab9.Map61B<K, V> {
      */
     @Override
     public void put(K key, V value) { // check if key is already there. otherwise, increase size
-        if (get(key) != null) {
-            return;
+        if (root == null) {
+            root = new Node(key, value);
+            size = 1;
         } else {
             putHelper(key, value, root);
-            size++;
         }
-
     }
 
     /* Returns the number of key-value mappings in this map. */
