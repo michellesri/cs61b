@@ -9,6 +9,7 @@ import java.util.Set;
  *
  *  @author Michelle
  */
+
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
     private static final int DEFAULT_SIZE = 16;
@@ -53,19 +54,43 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        ArrayMap<K, V> bucketIndex = buckets[hash(key)];
+        if (bucketIndex != null) {
+            return bucketIndex.get(key);
+        } else {
+            return null;
+        }
+    }
+
+    private void resize() {
+        ArrayMap<K, V>[] resizedBucket = new ArrayMap[buckets.length * 2];
+
+        // loop through previous buckets
+        for (int i = 0; i < buckets.length; i++) {
+//            buckets[i].keySet(); // set of keys. go through every item and get the value
+            for (K key : buckets[i].keySet()) {
+                V value = get(key); // returns value corresponding to the key
+                int bucketIndex = hash(key); // index to put key in bucket
+                resizedBucket[bucketIndex].put(key, value);
+            }
+        }
+        buckets = resizedBucket;
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (loadFactor() > MAX_LF) {
+            resize();
+        }
+        buckets[hash(key)].put(key, value);
     }
+
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
