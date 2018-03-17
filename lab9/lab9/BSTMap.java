@@ -120,7 +120,8 @@ public class BSTMap<K extends Comparable<K>, V> implements lab9.Map61B<K, V> {
     }
 
     /** Removes KEY from the tree if present
-     *  returns true on successful removal, false otherwise.
+     *  returns VALUE removed,
+     *  null on failed removal.
      */
     @Override
     public V remove(K key) {
