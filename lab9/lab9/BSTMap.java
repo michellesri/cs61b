@@ -78,6 +78,7 @@ public class BSTMap<K extends Comparable<K>, V> implements lab9.Map61B<K, V> {
                 return putHelper(key, value, p.right);
             } else {
                 p.right = new Node(key, value);
+                size++;
             }
         } else if (compareValue < 0) {
             if (p.left != null) {

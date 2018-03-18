@@ -1,5 +1,6 @@
 package lab9;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -65,11 +66,15 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private void resize() {
         ArrayMap<K, V>[] resizedBucket = new ArrayMap[buckets.length * 2];
 
+        for (int i = 0; i < resizedBucket.length; i++) {
+            resizedBucket[i] = new ArrayMap<>();
+        }
+
         // loop through previous buckets
         for (int i = 0; i < buckets.length; i++) {
 //            buckets[i].keySet(); // set of keys. go through every item and get the value
             for (K key : buckets[i].keySet()) {
-                V value = get(key); // returns value corresponding to the key
+                V value = buckets[i].get(key); // returns value corresponding to the key
                 int bucketIndex = hash(key); // index to put key in bucket
                 resizedBucket[bucketIndex].put(key, value);
             }
@@ -83,7 +88,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (loadFactor() > MAX_LF) {
             resize();
         }
-        buckets[hash(key)].put(key, value);
+        ArrayMap<K, V> targetBucket = buckets[hash(key)];
+        if (!targetBucket.containsKey(key)) {
+            size++;
+        }
+        targetBucket.put(key, value);
     }
 
 
