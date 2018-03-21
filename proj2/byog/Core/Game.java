@@ -6,6 +6,7 @@ import byog.TileEngine.Tileset;
 import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.*;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -15,21 +16,16 @@ public class Game {
     /* Feel free to change the width and height. */
     public static final int WIDTH = 100;
     public static final int HEIGHT = 30;
-    public boolean playingWithKeyboard;
-    int savedSeed;
-    Player savedPlayer;
+    public static final String SAVED_FILE_NAME = "saved-game.txt";
 
-    // seed used
-    // player position
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
-        playingWithKeyboard = true;
 
         displayMainMenu();
-        while (playingWithKeyboard) {
+        while (true) {
             if (StdDraw.hasNextKeyTyped()) {
                 char currentKey = Character.toLowerCase(StdDraw.nextKeyTyped());
                 interpretMenuKeys(currentKey);
@@ -38,20 +34,21 @@ public class Game {
     }
 
     public void interpretMenuKeys(char input) {
+
         if (input == 'n') { // new game
-            startGame();
+            Random rand = new Random(askUserForSeed());
+            TETile[][] world = generateWorld(rand);
+            Player player = initializePlayer(world, rand);
+            startGameWithKeyboard(world, player);
         } else if (input == 'l') { // load game
-            loadGame();
+            loadGameWithKeyboard();
         } else if (input == 'q') { // quit
             terminateGame();
-        } else if (input == 's') { // user finished inputting seed. start game with this seed.
-
         }
     }
 
     public char readUserMenuSelection(String input) {
-        String[] inputs = input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-        return (inputs[0].charAt(0));
+        return input.charAt(0);
     }
 
     public int readSeed(String input) {
@@ -63,29 +60,6 @@ public class Game {
         String[] inputs = input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
         return inputs[2];
     }
-
-//    public boolean isValidInput(String input) {
-//        // returns true if userInput is valid
-//
-//        String[] inputs = input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)"); // make this lowercase
-//        int inputsLength = input.length();
-//
-//        if (inputsLength > 3) {
-//            return false;
-//        }
-//
-//        String firstInput = inputs[0];
-//        String secondInput = inputs[1];
-//        String thirdInput = inputs[2];
-//        if (firstInput.length() != 1 || !firstInput.equals('n') || !firstInput.equals('l') || !firstInput.equals('q')) {
-//            return false;
-//        } else if (!secondInput.matches("\\d")) { // check if there is a seed (at least one digit)
-//            return false;
-//        } else if (thirdInput.length() <= 0) { //third input needs to have commands
-//            return false;
-//        }
-//        return true;
-//    }
 
     public void terminateGame() {
         System.exit(0);
@@ -103,7 +77,7 @@ public class Game {
         StdDraw.show();
 
         String seed = "";
-        while (playingWithKeyboard) {
+        while (true) {
             if (StdDraw.hasNextKeyTyped()) {
                 char currentKey = Character.toLowerCase(StdDraw.nextKeyTyped());
                 if (currentKey == 's') {
@@ -115,9 +89,37 @@ public class Game {
         return Integer.parseInt(seed);
     }
 
-    public void startGameWithSeed(int seed) {
-        Random rand = new Random(seed);
+    public Player initializePlayer(TETile[][] world, Random rand) {
+        Position position = new Position(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
+        while (world[position.x][position.y] != Tileset.FLOOR) {
+            position = new Position(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
+        }
 
+        Player player = new Player(position);
+
+        world[player.pos.x][player.pos.y] = Tileset.PLAYER;
+
+        return player;
+
+    }
+
+    public void startGameFromInputString(TETile[][] world, String userMovements, Player player) {
+
+        for (int i = 0; i < userMovements.length(); i++) {
+            char currentKey = userMovements.charAt(i);
+            if (currentKey == ':') {
+                char nextKey = userMovements.charAt(i + 1);
+                if (nextKey == 'q') {
+                    break;
+                }
+            } else {
+                world[player.pos.x][player.pos.y] = Tileset.FLOOR;
+                player.movePlayer(currentKey, world, WIDTH, HEIGHT);
+                world[player.pos.x][player.pos.y] = Tileset.PLAYER;
+            }
+        }
+
+        saveGame(player, world);
     }
 
     public Player createPlayer(Position pos) {
@@ -130,63 +132,10 @@ public class Game {
         return world;
     }
 
-    public void startGame() {
-        int seed = 200;
+    public void startGameWithKeyboard(TETile[][] world, Player player) {
 
-        if (!playingWithKeyboard) {
-
-        } else { // we are playing with the keyboard
-
-        }
-        Random rand = new Random(seed);
-        ter.initialize(WIDTH, HEIGHT);
         // initialize tiles
-        TETile[][] world = generateWorld(rand);
-
-        Position position = new Position(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
-        while (world[position.x][position.y] != Tileset.FLOOR) {
-            position = new Position(rand.nextInt(WIDTH), rand.nextInt(HEIGHT));
-        }
-
-        Player player = new Player(position);
-
-        world[player.pos.x][player.pos.y] = Tileset.PLAYER;
-
-        ter.renderFrame(world);
-
-        while (playingWithKeyboard) {
-            if (StdDraw.hasNextKeyTyped()) {
-                char currentKey = StdDraw.nextKeyTyped();
-                if (currentKey == ':') {
-                    while (!StdDraw.hasNextKeyTyped()) {
-                    }
-                    if (Character.toLowerCase(StdDraw.nextKeyTyped()) == 'q') {
-                        break;
-                    }
-                } else {
-                    world[player.pos.x][player.pos.y] = Tileset.FLOOR;
-                    player.movePlayer(currentKey, world, WIDTH, HEIGHT);
-
-                    world[player.pos.x][player.pos.y] = Tileset.PLAYER;
-                    ter.renderFrame(world);
-                }
-            }
-        }
-        saveGame(player, seed);
-        displayMainMenu();
-    }
-
-    public void loadGame() {
-
-        Random rand = new Random(savedSeed);
         ter.initialize(WIDTH, HEIGHT);
-        // initialize tiles
-        TETile[][] world = generateWorld(rand);
-
-
-        Player player = savedPlayer;
-        world[player.pos.x][player.pos.y] = Tileset.PLAYER;
-
         ter.renderFrame(world);
 
         while (true) {
@@ -207,13 +156,55 @@ public class Game {
                 }
             }
         }
-        saveGame(player, savedSeed);
+        saveGame(player, world);
         displayMainMenu();
     }
 
-    public void saveGame(Player player, int seed) {
-        savedPlayer = player;
-        savedSeed = seed;
+    public void loadGameWithKeyboard() {
+        GameState loadedGame = readObjectFromFile(SAVED_FILE_NAME);
+        startGameWithKeyboard(loadedGame.world, loadedGame.player);
+    }
+
+    public TETile[][] loadGameWithUserInput(String userMovements) {
+        GameState loadedGame = readObjectFromFile(SAVED_FILE_NAME);
+        startGameFromInputString(loadedGame.world, userMovements, loadedGame.player); // needs to take userMovements
+        return loadedGame.world;
+
+    }
+
+    public GameState readObjectFromFile(String filepath) {
+
+        try {
+
+            FileInputStream fileIn = new FileInputStream(filepath);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+            Object obj = objectIn.readObject();
+            objectIn.close();
+            return (GameState) obj;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public void saveGame(Player player, TETile[][] world) {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(SAVED_FILE_NAME, "UTF-8");
+            GameState gameState = new GameState(player, world);
+            writer.print(gameState);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 
     public void displayMainMenu() {
@@ -248,19 +239,30 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
-        playingWithKeyboard = false;
         input = input.toLowerCase();
-        char[] inputChars = input.toCharArray();
 
-        interpretMenuKeys(readUserMenuSelection(input));
+        char menuSelection = readUserMenuSelection(input);
 
-        int userSeed = readSeed(input);
-        String userMovements = readUserMovements(input);
+        if (menuSelection == 'n') { // new game
+            int userSeed = readSeed(input);
+            String userMovements = readUserMovements(input);
+            Random rand = new Random(userSeed);
+            TETile[][] finalWorldFrame = generateWorld(rand);
 
-        Random rand = new Random(userSeed);
-        TETile[][] finalWorldFrame = generateWorld(rand);
+            Player player = initializePlayer(finalWorldFrame, rand);
+            startGameFromInputString(finalWorldFrame, userMovements, player);
+            return finalWorldFrame;
 
-        return finalWorldFrame;
+        } else if (menuSelection == 'l') { // load game
+            String userMovements = input.substring(1);
+            return loadGameWithUserInput(userMovements);
+
+        } else if (menuSelection == 'q') { // quit
+//            terminateGame();
+            return null;
+        }
+
+        throw new RuntimeException();
     }
 
     public static TETile[][] generateWorld(Random rand) {
