@@ -17,19 +17,16 @@ public class PercolationStats {
 
         while (T > 0) {
             Percolation percolation = pf.make(N);
-            int openSites = 0;
+            StdRandom.setSeed(System.currentTimeMillis());
 
             while (!percolation.percolates()) {
-
-                StdRandom.setSeed(System.currentTimeMillis());
-
+                
                 int randomRow = StdRandom.uniform(N);
                 int randomCol = StdRandom.uniform(N);
 
                 percolation.open(randomRow, randomCol);
-                openSites++;
             }
-            openSitesPerT[T] = openSites;
+            openSitesPerT[T] = percolation.numberOfOpenSites();
             T--;
         }
 
