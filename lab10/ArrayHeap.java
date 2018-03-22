@@ -27,24 +27,21 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Returns the index of the node to the left of the node at i.
      */
     private static int leftIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return 2 * i;
     }
 
     /**
      * Returns the index of the node to the right of the node at i.
      */
     private static int rightIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return 2 * i + 1;
     }
 
     /**
      * Returns the index of the node that is the parent of the node at i.
      */
     private static int parentIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return i / 2;
     }
 
     /**
@@ -107,8 +104,18 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        /** TODO: Your code here. */
-        return;
+        int parentIndex = parentIndex(index);
+        if (!inBounds(parentIndex)) {
+            return;
+        }
+        int min = min(parentIndex, index);
+        if (min == parentIndex) {
+            // parent is smaller than current, so stop
+            return;
+        }
+
+        swap(index, parentIndex);
+        swim(parentIndex);
     }
 
     /**
@@ -118,8 +125,29 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        /** TODO: Your code here. */
-        return;
+        int leftChildIndex = leftIndex(index);
+        int rightChildIndex = rightIndex(index);
+
+        Node currentNode = getNode(index);
+        Node leftNode = getNode(leftChildIndex);
+        Node rightNode = getNode(rightChildIndex);
+
+        if (leftNode == null || rightNode == null) {
+            return;
+        }
+
+        if (leftNode.priority() > currentNode.priority()
+                && rightNode.priority() > currentNode.priority()) {
+            return;
+        }
+
+        if (leftNode.priority() > rightNode.priority()) {
+            swap(index, rightChildIndex);
+            sink(rightChildIndex);
+        } else {
+            swap(index, leftChildIndex);
+            sink(leftChildIndex);
+        }
     }
 
     /**
@@ -133,7 +161,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             resize(contents.length * 2);
         }
 
-        /* TODO: Your code here! */
+        size++;
+        int index = size;
+        contents[index] = new Node(item, priority);
+        swim(index);
     }
 
     /**
@@ -143,7 +174,12 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T peek() {
         /* TODO: Your code here! */
-        return null;
+        Node root = getNode(1);
+        if (root != null) {
+            return root.myItem;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -157,8 +193,18 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
-        /* TODO: Your code here! */
-        return null;
+        // swap last item with root
+        swap(size, 1);
+
+        // remove the min
+        Node min = getNode(size);
+        contents[size] = null;
+        size--;
+
+        // sink the root
+        sink(1);
+
+        return min.myItem;
     }
 
     /**
@@ -180,8 +226,20 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        /* TODO: Your code here! */
-        return;
+        int foundIndex = -1;
+        for (int i = 0; i < contents.length; i++) {
+            Node currentNode = contents[i];
+            if (currentNode != null) {
+                if (currentNode.myItem.equals(item)) {
+                    foundIndex = i;
+                    break;
+                }
+            }
+        }
+
+        contents[foundIndex].myPriority = priority;
+        swim(foundIndex);
+        sink(foundIndex);
     }
 
     /**

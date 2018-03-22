@@ -83,7 +83,9 @@ public class Game {
                 if (currentKey == 's') {
                     break;
                 }
-                seed += currentKey;
+                if (Character.isDigit(currentKey)) {
+                    seed += currentKey;
+                }
             }
         }
         return Integer.parseInt(seed);
@@ -103,7 +105,7 @@ public class Game {
 
     }
 
-    public void startGameFromInputString(TETile[][] world, String userMovements, Player player) {
+    public void startGameWithUserInput(TETile[][] world, String userMovements, Player player) {
 
         for (int i = 0; i < userMovements.length(); i++) {
             char currentKey = userMovements.charAt(i);
@@ -167,7 +169,7 @@ public class Game {
 
     public TETile[][] loadGameWithUserInput(String userMovements) {
         GameState loadedGame = readObjectFromFile(SAVED_FILE_NAME);
-        startGameFromInputString(loadedGame.world, userMovements, loadedGame.player); // needs to take userMovements
+        startGameWithUserInput(loadedGame.world, userMovements, loadedGame.player); // needs to take userMovements
         return loadedGame.world;
 
     }
@@ -190,21 +192,20 @@ public class Game {
     }
 
     public void saveGame(Player player, TETile[][] world) {
-        PrintWriter writer = null;
         try {
-            writer = new PrintWriter(SAVED_FILE_NAME, "UTF-8");
-            GameState gameState = new GameState(player, world);
-            writer.print(gameState);
+            FileOutputStream fout = new FileOutputStream(SAVED_FILE_NAME);
+            ObjectOutputStream oos = new ObjectOutputStream(fout);
 
-        } catch (FileNotFoundException e) {
+            GameState gameState = new GameState(player, world);
+            oos.writeObject(gameState);
+            oos.close();
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
         }
+
+        // we should figure out if there are other inputs, and then start from beginning
+        // laasd
+        // load game, start 
     }
 
     public void displayMainMenu() {
@@ -250,7 +251,7 @@ public class Game {
             TETile[][] finalWorldFrame = generateWorld(rand);
 
             Player player = initializePlayer(finalWorldFrame, rand);
-            startGameFromInputString(finalWorldFrame, userMovements, player);
+            startGameWithUserInput(finalWorldFrame, userMovements, player);
             return finalWorldFrame;
 
         } else if (menuSelection == 'l') { // load game

@@ -3,7 +3,9 @@ package byog.Core;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     Position pos; // position of the current character
 
     public Player(Position pos) {
@@ -32,6 +34,7 @@ public class Player {
     }
 
     public boolean isPositionMovable(int x, int y, int worldWidth, int worldHeight, TETile[][] world) {
-        return (x >= 0 && y >= 0 && x < worldWidth && y < worldHeight && world[x][y] == Tileset.FLOOR);
+        return (x >= 0 && y >= 0 && x < worldWidth && y < worldHeight &&
+                world[x][y].character() == Tileset.FLOOR.character());
     }
 }
