@@ -88,6 +88,11 @@ public class Percolation {
     }
     public boolean isOpen(int row, int col) {
     // is the site (row, col) open?
+
+        if (!isValidCoordinate(row, col)) {
+            return false;
+        }
+
         return grid[row][col];
 
     }

@@ -1,6 +1,7 @@
 package hw2;
 
 import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.Stopwatch;
 
 public class PercolationStats {
 
@@ -20,13 +21,13 @@ public class PercolationStats {
             StdRandom.setSeed(System.currentTimeMillis());
 
             while (!percolation.percolates()) {
-                
+
                 int randomRow = StdRandom.uniform(N);
                 int randomCol = StdRandom.uniform(N);
 
                 percolation.open(randomRow, randomCol);
             }
-            openSitesPerT[T] = percolation.numberOfOpenSites();
+            openSitesPerT[T - 1] = percolation.numberOfOpenSites();
             T--;
         }
 
@@ -69,5 +70,21 @@ public class PercolationStats {
         double stddev = stddev();
 
         return mean + 1.96 * stddev / Math.sqrt(openSitesPerT.length);
+    }
+
+    public static void main(String[] args) {
+        PercolationFactory percolationFactory = new PercolationFactory();
+
+        double totalTime = 0;
+        int counter = 100;
+
+        for (int i = 0; i < counter; i++) {
+            Stopwatch stopwatch = new Stopwatch();
+            PercolationStats percolationStats = new PercolationStats(200, 50, percolationFactory);
+            double time = stopwatch.elapsedTime();
+            totalTime += time;
+        }
+
+        System.out.println("average time " + totalTime + " / " + counter + " = " + totalTime / counter);
     }
 }
