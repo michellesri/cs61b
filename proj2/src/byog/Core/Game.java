@@ -205,7 +205,7 @@ public class Game {
 
         // we should figure out if there are other inputs, and then start from beginning
         // laasd
-        // load game, start 
+        // load game, start
     }
 
     public void displayMainMenu() {
