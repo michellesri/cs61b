@@ -10,6 +10,10 @@ public class PercolationStats {
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
 
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException();
+        }
+
         openSitesPerT = new int[T];
         // perform T independent experiments on an N-by-N grid
         if (N <= 0 || T <= 0) {

@@ -14,8 +14,12 @@ public class Percolation {
 
     public Percolation(int N) {
 
-        topSentinel = N * N + 1;
-        bottomSentinel = N * N + 2;
+        if (N <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        topSentinel = N * N;
+        bottomSentinel = N * N + 1;
 
         WQU = new WeightedQuickUnionUF(N * N + 2);
         // create N-by-N grid, with all sites initially blocked
