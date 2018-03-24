@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.Stopwatch;
 
 public class PercolationStats {
 
-    int[] openSitesPerT;
+    private int[] openSitesPerT;
     // array of number of open sites in each test
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
@@ -72,19 +72,19 @@ public class PercolationStats {
         return mean + 1.96 * stddev / Math.sqrt(openSitesPerT.length);
     }
 
-    public static void main(String[] args) {
-        PercolationFactory percolationFactory = new PercolationFactory();
-
-        double totalTime = 0;
-        int counter = 100;
-
-        for (int i = 0; i < counter; i++) {
-            Stopwatch stopwatch = new Stopwatch();
-            PercolationStats percolationStats = new PercolationStats(200, 50, percolationFactory);
-            double time = stopwatch.elapsedTime();
-            totalTime += time;
-        }
-
-        System.out.println("average time " + totalTime + " / " + counter + " = " + totalTime / counter);
-    }
+//    public static void main(String[] args) {
+//        PercolationFactory percolationFactory = new PercolationFactory();
+//
+//        double totalTime = 0;
+//        int counter = 100;
+//
+//        for (int i = 0; i < counter; i++) {
+//            Stopwatch stopwatch = new Stopwatch();
+//            PercolationStats percolationStats = new PercolationStats(200, 50, percolationFactory);
+//            double time = stopwatch.elapsedTime();
+//            totalTime += time;
+//        }
+//
+//        System.out.println("average time " + totalTime + " / " + counter + " = " + totalTime / counter);
+//    }
 }
