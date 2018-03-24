@@ -1,5 +1,6 @@
 package hw3.hash;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class OomageTestUtility {
@@ -14,14 +15,15 @@ public class OomageTestUtility {
          */
 
         int[] buckets = new int[M];
+        int N = oomages.size();
 
         for (Oomage o : oomages) {
             int bucketNum = (o.hashCode() & 0x7FFFFFFF) % M;
             buckets[bucketNum]++;
         }
 
+        System.out.println(Arrays.toString(buckets));
         for (int i = 0; i < buckets.length; i++) {
-            int N = buckets.length;
             int currentBucketValue = buckets[i];
             if (currentBucketValue < N / 50 || currentBucketValue > N / 2.5) {
                 return false;
