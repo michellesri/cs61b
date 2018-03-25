@@ -1,15 +1,13 @@
 package hw3.hash;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class TestSimpleOomage {
@@ -73,8 +71,19 @@ public class TestSimpleOomage {
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(oomages, 10));
     }
 
-    /** Calls tests for SimpleOomage. */
+    /**
+     * Calls tests for SimpleOomage.
+     */
     public static void main(String[] args) {
+
         jh61b.junit.textui.runClasses(TestSimpleOomage.class);
+
+        int[] buckets = new int[5];
+
+        for (int i = 0; i < 1000000; i++) {
+            buckets[SimpleOomage.randomSimpleOomage().hashCode() % 5]++;
+        }
+
+        System.out.println(Arrays.toString(buckets));
     }
 }

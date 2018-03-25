@@ -48,7 +48,9 @@ public class Percolation {
             openSites++;
             if (row == 0) {
                 connectToTop(xyTo1D(row, col));
-            } else if (row == N - 1) {
+            }
+
+            if (row == N - 1) {
                 connectToBottom(xyTo1D(row, col));
 
             }

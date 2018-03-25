@@ -1,6 +1,7 @@
 package hw3.hash;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -41,11 +42,11 @@ public class TestComplexOomage {
     public void testWithDeadlyParams() {
         List<Oomage> deadlyList = new ArrayList<>();
 
-        deadlyList.add(ComplexOomage.newComplexOomage(0, 0, 0, 0, 0, 0, 0));
-        deadlyList.add(ComplexOomage.newComplexOomage(1, 0, 0, 0, 0, 0, 0));
-        deadlyList.add(ComplexOomage.newComplexOomage(1, 16, 16, 0, 0, 0, 0));
-        deadlyList.add(ComplexOomage.newComplexOomage(16, 16, 0, 0, 0, 0, 0));
-        deadlyList.add(ComplexOomage.newComplexOomage(1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0));
+        deadlyList.add(newComplexOomage(0, 0, 0, 0, 0, 0, 0));
+        deadlyList.add(newComplexOomage(1, 0, 0, 0, 0, 0, 0));
+        deadlyList.add(newComplexOomage(1, 16, 16, 0, 0, 0, 0));
+        deadlyList.add(newComplexOomage(16, 16, 0, 0, 0, 0, 0));
+        deadlyList.add(newComplexOomage(1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0));
 
         for (Oomage oomage : deadlyList) {
             System.out.println(oomage.hashCode());
@@ -54,7 +55,18 @@ public class TestComplexOomage {
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
     }
 
-    /** Calls tests for SimpleOomage. */
+
+    private ComplexOomage newComplexOomage(int... args) {
+        ArrayList<Integer> params = new ArrayList<>(args.length);
+        for (int i = 0; i < args.length; i += 1) {
+            params.add(args[i]);
+        }
+        return new ComplexOomage(params);
+    }
+
+    /**
+     * Calls tests for SimpleOomage.
+     */
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestComplexOomage.class);
     }

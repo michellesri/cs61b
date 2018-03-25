@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.Stopwatch;
 
 public class PercolationStats {
 
-    private int[] openSitesPerT;
+    private double[] openSitesPerT;
     // array of number of open sites in each test
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
@@ -14,7 +14,7 @@ public class PercolationStats {
             throw new IllegalArgumentException();
         }
 
-        openSitesPerT = new int[T];
+        openSitesPerT = new double[T];
         // perform T independent experiments on an N-by-N grid
         if (N <= 0 || T <= 0) {
             throw new java.lang.IllegalArgumentException();
@@ -29,9 +29,12 @@ public class PercolationStats {
                 int randomRow = StdRandom.uniform(N);
                 int randomCol = StdRandom.uniform(N);
 
-                percolation.open(randomRow, randomCol);
+                if (!percolation.isOpen(randomRow, randomCol)) {
+                    percolation.open(randomRow, randomCol);
+                }
+
             }
-            openSitesPerT[T - 1] = percolation.numberOfOpenSites();
+            openSitesPerT[T - 1] = percolation.numberOfOpenSites() / (double) (N * N);
             T--;
         }
 
@@ -39,8 +42,8 @@ public class PercolationStats {
 
     public double mean() {
         // sample mean of percolation threshold
-        int count = 0;
-        for (int i : openSitesPerT) {
+        double count = 0;
+        for (double i : openSitesPerT) {
             count += i;
         }
 
@@ -51,9 +54,9 @@ public class PercolationStats {
         // sample standard deviation of percolation threshold
         double mean = mean();
 
-        int total = 0;
+        double total = 0;
 
-        for (int i : openSitesPerT) {
+        for (double i : openSitesPerT) {
             total += Math.pow((i - mean), 2);
         }
 
