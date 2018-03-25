@@ -30,8 +30,7 @@ public class SimpleOomage implements Oomage {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
-            // TODO: Write a perfect hash function for Simple Oomages.
-            return 65536 * red + 256 * green + blue;
+            return 37 * red + 256 * green + blue;
 
         }
     }
