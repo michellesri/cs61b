@@ -22,7 +22,7 @@ public class PercolationStats {
 
         while (T > 0) {
             Percolation percolation = pf.make(N);
-            StdRandom.setSeed(System.currentTimeMillis());
+            StdRandom.setSeed(System.nanoTime());
 
             while (!percolation.percolates()) {
 
