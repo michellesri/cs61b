@@ -259,7 +259,6 @@ public class Game {
             return loadGameWithUserInput(userMovements);
 
         } else if (menuSelection == 'q') { // quit
-//            terminateGame();
             return null;
         }
 
@@ -268,7 +267,6 @@ public class Game {
 
     public static TETile[][] generateWorld(Random rand) {
 
-        int roomNum = rand.nextInt(50);
         List<RectangularRoom> existingRooms = new ArrayList<>();
         // initialize tiles
         TETile[][] world = new TETile[WIDTH][HEIGHT];
@@ -278,7 +276,7 @@ public class Game {
             }
         }
 
-        while (existingRooms.size() < roomNum) {
+        for (int i = 0; i < 10; i++) {
             RectangularRoom newRoom = RectangularRoom.generateRoom(rand, HEIGHT, WIDTH);
 
             if (checkRoomAgainstExistingRooms(world, newRoom, existingRooms)) {
