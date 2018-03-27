@@ -65,7 +65,7 @@ public class Game {
         System.exit(0);
     }
 
-    public int askUserForSeed() {
+    public long askUserForSeed() {
         StdDraw.clear();
         StdDraw.setXscale(0, WIDTH);
         StdDraw.setYscale(0, HEIGHT);
@@ -88,7 +88,7 @@ public class Game {
                 }
             }
         }
-        return Integer.parseInt(seed);
+        return Long.parseLong(seed);
     }
 
     public Player initializePlayer(TETile[][] world, Random rand) {
