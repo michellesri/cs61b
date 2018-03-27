@@ -71,7 +71,7 @@ public class Game {
         StdDraw.setYscale(0, HEIGHT);
         Font font = new Font("Arial", Font.BOLD, 30);
         StdDraw.setFont(font);
-        StdDraw.text(WIDTH/2, HEIGHT/2, "Please enter a seed");
+        StdDraw.text(WIDTH / 2, HEIGHT / 2, "Please enter a seed");
 
         StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.show();
@@ -214,9 +214,9 @@ public class Game {
         StdDraw.setYscale(0, HEIGHT);
         Font font = new Font("Arial", Font.BOLD, 30);
         StdDraw.setFont(font);
-        StdDraw.text(WIDTH/2, HEIGHT/2, "Quit (Q)");
-        StdDraw.text(WIDTH/2, HEIGHT/2 + HEIGHT/10, "Load Game (L)");
-        StdDraw.text(WIDTH/2, HEIGHT/2 + 2 * HEIGHT/10, "New Game (N)");
+        StdDraw.text(WIDTH / 2, HEIGHT / 2, "Quit (Q)");
+        StdDraw.text(WIDTH / 2, HEIGHT / 2 + HEIGHT / 10, "Load Game (L)");
+        StdDraw.text(WIDTH / 2, HEIGHT / 2 + 2 * HEIGHT / 10, "New Game (N)");
 
         StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.show();
@@ -311,7 +311,7 @@ public class Game {
     }
 
     public static boolean checkRoomAgainstExistingRooms(TETile[][] world, RectangularRoom newlyGeneratedRoom,
-                                                     List<RectangularRoom> existingRooms) {
+                                                        List<RectangularRoom> existingRooms) {
         // returns true if the room already exists. we need to make a new room.
         for (RectangularRoom room : existingRooms) {
             if (roomOverlapCheck(world, newlyGeneratedRoom, room)) {
@@ -328,8 +328,8 @@ public class Game {
             }
         }
 
-        for (int x = 1; x < newRoom.width -1; x += 1) {
-            for (int y = 1; y < newRoom.height - 1; y+= 1) {
+        for (int x = 1; x < newRoom.width - 1; x += 1) {
+            for (int y = 1; y < newRoom.height - 1; y += 1) {
                 world[newRoom.pos.x + x][newRoom.pos.y + y] = Tileset.FLOOR;
 
             }
