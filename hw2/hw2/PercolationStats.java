@@ -60,7 +60,7 @@ public class PercolationStats {
             total += Math.pow((i - mean), 2);
         }
 
-        return Math.sqrt(total / openSitesPerT.length - 1);
+        return Math.sqrt(total / (openSitesPerT.length - 1));
     }
 
     public double confidenceLow() {
