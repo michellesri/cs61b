@@ -245,7 +245,7 @@ public class Game {
         char menuSelection = readUserMenuSelection(input);
 
         if (menuSelection == 'n') { // new game
-            int userSeed = readSeed(input);
+            long userSeed = readSeed(input);
             String userMovements = readUserMovements(input);
             Random rand = new Random(userSeed);
             TETile[][] finalWorldFrame = generateWorld(rand);
