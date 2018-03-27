@@ -1,9 +1,6 @@
 package byog.Core;
 
-import byog.TileEngine.TETile;
-
 import java.util.Random;
-import java.util.Set;
 
 public class RectangularRoom {
     int height;
