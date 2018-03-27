@@ -203,7 +203,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         size--;
 
         // sink the root
-        sink(1);
+        if (size > 0) {
+            sink(1);
+        }
 
         return min.myItem;
     }
