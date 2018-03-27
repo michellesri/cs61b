@@ -77,7 +77,7 @@ public class TestSimpleOomage {
         int[] buckets = new int[5];
 
         for (int i = 0; i < 1000000; i++) {
-            buckets[SimpleOomage.randomSimpleOomage().hashCode() % 5]++;
+            buckets[Math.abs(SimpleOomage.randomSimpleOomage().hashCode()) % 5]++;
         }
 
         System.out.println(Arrays.toString(buckets));
