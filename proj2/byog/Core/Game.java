@@ -51,9 +51,9 @@ public class Game {
         return input.charAt(0);
     }
 
-    public int readSeed(String input) {
+    public long readSeed(String input) {
         String[] inputs = input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-        return Integer.parseInt(inputs[1]); // return the seed
+        return Long.parseLong(inputs[1]); // return the seed
     }
 
     public String readUserMovements(String input) {
