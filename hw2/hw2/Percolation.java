@@ -4,11 +4,11 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 
 public class Percolation {
-    private boolean grid[][];
+    private boolean[][] grid;
     private int openSites;
     private int N;
-    private WeightedQuickUnionUF WQUcheckFull;
-    private WeightedQuickUnionUF WQUpercolation;
+    private WeightedQuickUnionUF wquCheckFull;
+    private WeightedQuickUnionUF wquPercolation;
 
     private final int topSentinel;
     private final int bottomSentinel;
@@ -22,8 +22,8 @@ public class Percolation {
         topSentinel = N * N;
         bottomSentinel = N * N + 1;
 
-        WQUpercolation = new WeightedQuickUnionUF(N * N + 2);
-        WQUcheckFull = new WeightedQuickUnionUF(N * N + 1);
+        wquPercolation = new WeightedQuickUnionUF(N * N + 2);
+        wquCheckFull = new WeightedQuickUnionUF(N * N + 1);
         // create N-by-N grid, with all sites initially blocked
         openSites = 0;
         this.N = N;
@@ -36,13 +36,13 @@ public class Percolation {
     }
 
     private void connectToTop(int currentCell) {
-        WQUpercolation.union(topSentinel, currentCell);
-        WQUcheckFull.union(topSentinel, currentCell);
+        wquPercolation.union(topSentinel, currentCell);
+        wquCheckFull.union(topSentinel, currentCell);
 
     }
 
     private void connectToBottom(int currentCell) {
-        WQUpercolation.union(bottomSentinel, currentCell);
+        wquPercolation.union(bottomSentinel, currentCell);
     }
 
     public void open(int row, int col) {
@@ -80,26 +80,26 @@ public class Percolation {
         int centerCell = xyTo1D(row, col);
 
         if (topNeighborOpen) {
-            WQUpercolation.union(xyTo1D(topNeighborRow, col), centerCell);
-            WQUcheckFull.union(xyTo1D(topNeighborRow, col), centerCell);
+            wquPercolation.union(xyTo1D(topNeighborRow, col), centerCell);
+            wquCheckFull.union(xyTo1D(topNeighborRow, col), centerCell);
 
         }
 
         if (bottomNeighborOpen) {
-            WQUpercolation.union(xyTo1D(bottomNeighborRow, col), centerCell);
-            WQUcheckFull.union(xyTo1D(bottomNeighborRow, col), centerCell);
+            wquPercolation.union(xyTo1D(bottomNeighborRow, col), centerCell);
+            wquCheckFull.union(xyTo1D(bottomNeighborRow, col), centerCell);
 
         }
 
         if (rightNeighborOpen) {
-            WQUpercolation.union(xyTo1D(row, rightNeighborCol), centerCell);
-            WQUcheckFull.union(xyTo1D(row, rightNeighborCol), centerCell);
+            wquPercolation.union(xyTo1D(row, rightNeighborCol), centerCell);
+            wquCheckFull.union(xyTo1D(row, rightNeighborCol), centerCell);
 
         }
 
         if (leftNeighborOpen) {
-            WQUpercolation.union(xyTo1D(row, leftNeighborCol), centerCell);
-            WQUcheckFull.union(xyTo1D(row, leftNeighborCol), centerCell);
+            wquPercolation.union(xyTo1D(row, leftNeighborCol), centerCell);
+            wquCheckFull.union(xyTo1D(row, leftNeighborCol), centerCell);
 
         }
     }
@@ -121,7 +121,7 @@ public class Percolation {
     // is the site (row, col) full?
         // check if the cell is full by seeing if any in the set of WQU are connected to the top
         int currentCell = xyTo1D(row, col);
-        return WQUcheckFull.connected(currentCell, topSentinel);
+        return wquCheckFull.connected(currentCell, topSentinel);
 
 
     }
@@ -132,7 +132,7 @@ public class Percolation {
     public boolean percolates() {
     // does the system percolate?
         // check if one set in the WQU has a cell that's connected to the top and bottom
-        return WQUpercolation.connected(topSentinel, bottomSentinel);
+        return wquPercolation.connected(topSentinel, bottomSentinel);
     }
 
     private int xyTo1D(int r, int c) {
@@ -146,5 +146,3 @@ public class Percolation {
 
 
 }
-
-// need to use union on two ints union (xyto1d, xyto2d)

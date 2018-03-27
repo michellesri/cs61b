@@ -1,7 +1,6 @@
 package hw2;
 
 import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.Stopwatch;
 
 public class PercolationStats {
 
@@ -92,6 +91,7 @@ public class PercolationStats {
 //            totalTime += time;
 //        }
 //
-//        System.out.println("average time " + totalTime + " / " + counter + " = " + totalTime / counter);
+//        System.out.println("average time " + totalTime + " / " +
+//              counter + " = " + totalTime / counter);
 //    }
 }
