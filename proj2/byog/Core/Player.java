@@ -33,8 +33,9 @@ public class Player implements Serializable {
         }
     }
 
-    public boolean isPositionMovable(int x, int y, int worldWidth, int worldHeight, TETile[][] world) {
-        return (x >= 0 && y >= 0 && x < worldWidth && y < worldHeight &&
-                world[x][y].character() == Tileset.FLOOR.character());
+    public boolean isPositionMovable(int x, int y, int worldWidth,
+                                     int worldHeight, TETile[][] world) {
+        return (x >= 0 && y >= 0 && x < worldWidth && y < worldHeight
+                && world[x][y].character() == Tileset.FLOOR.character());
     }
 }

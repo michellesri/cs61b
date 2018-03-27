@@ -7,8 +7,9 @@ import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.*;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Game {
@@ -105,7 +106,8 @@ public class Game {
 
     }
 
-    public void startGameWithUserInput(TETile[][] world, String userMovements, Player player) {
+    public void startGameWithUserInput(TETile[][] world,
+                                       String userMovements, Player player) {
 
         for (int i = 0; i < userMovements.length(); i++) {
             char currentKey = userMovements.charAt(i);
@@ -169,7 +171,7 @@ public class Game {
 
     public TETile[][] loadGameWithUserInput(String userMovements) {
         GameState loadedGame = readObjectFromFile(SAVED_FILE_NAME);
-        startGameWithUserInput(loadedGame.world, userMovements, loadedGame.player); // needs to take userMovements
+        startGameWithUserInput(loadedGame.world, userMovements, loadedGame.player);
         return loadedGame.world;
 
     }
@@ -185,10 +187,10 @@ public class Game {
             objectIn.close();
             return (GameState) obj;
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public void saveGame(Player player, TETile[][] world) {
@@ -199,13 +201,9 @@ public class Game {
             GameState gameState = new GameState(player, world);
             oos.writeObject(gameState);
             oos.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // we should figure out if there are other inputs, and then start from beginning
-        // laasd
-        // load game, start
     }
 
     public void displayMainMenu() {
@@ -236,7 +234,7 @@ public class Game {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] playWithInputString(String input) {
-        // TODO: Fill out this method to run the game using the input passed in,
+        // this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
@@ -369,11 +367,14 @@ public class Game {
     }
 
     public static void setWall(TETile[][] world, int x, int y) {
-        if (world[x][y] == Tileset.FLOOR) return;
+        if (world[x][y] == Tileset.FLOOR) {
+            return;
+        }
         world[x][y] = Tileset.TREE;
     }
 
-    public static boolean roomOverlapCheck(TETile[][] world, RectangularRoom room1, RectangularRoom room2) {
+    public static boolean roomOverlapCheck(TETile[][] world, RectangularRoom room1,
+                                           RectangularRoom room2) {
         // returns true if rooms overlap
 
         int room1startX = room1.pos.x;

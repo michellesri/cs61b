@@ -15,7 +15,8 @@ public class Hall {
         this.length = length;
     }
 
-    public static List<Hall> generateHalls(Random rand, RectangularRoom room1, RectangularRoom room2) {
+    public static List<Hall> generateHalls(Random rand, RectangularRoom room1,
+                                           RectangularRoom room2) {
         // return a list of halls that connects these two rooms
 
         int room1PositionX = rand.nextInt(room1.width - 2) + room1.pos.x + 1;

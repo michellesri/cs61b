@@ -26,16 +26,4 @@ public class RectangularRoom {
 
         return myRoom;
     }
-//
-//    public static RectangularRoom generateHorizontalHall(RectangularRoom room1, RectangularRoom room2) {
-//        // given two rooms, generate a hall for them.
-//
-//        Position roomCenter = new Position(roomWidth / 2, 1);
-//
-//
-//        int minDistance = Math.abs(room2.pos.x - room1.pos.x); //min distance needed to reach other room
-//        int xDistance = Math.abs(room1.roomCenter.x - room2.roomCenter.x);
-//        int yDistance = Math.abs(room1.roomCenter.y - room2.roomCenter.y);
-//        new RectangularRoom(1, xDistance, room1.roomCenter,
-//    }
 }
