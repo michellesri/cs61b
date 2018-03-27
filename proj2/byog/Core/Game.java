@@ -308,7 +308,8 @@ public class Game {
         return world;
     }
 
-    public static boolean checkRoomAgainstExistingRooms(TETile[][] world, RectangularRoom newlyGeneratedRoom,
+    public static boolean checkRoomAgainstExistingRooms(TETile[][] world,
+                                                        RectangularRoom newlyGeneratedRoom,
                                                         List<RectangularRoom> existingRooms) {
         // returns true if the room already exists. we need to make a new room.
         for (RectangularRoom room : existingRooms) {
