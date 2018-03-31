@@ -54,12 +54,14 @@ public class Solver {
 
         SearchNode currentNode = winningNode;
 
-        while (currentNode.prevSearchNode != null) {
+        while (currentNode != null) {
             pathToVictoryReverse.add(currentNode.worldState);
             currentNode = currentNode.prevSearchNode;
         }
 
-        for (int i = pathToVictoryReverse.size() - 1; i > 0 ; i--) {
+        int pathLength = pathToVictoryReverse.size();
+
+        for (int i = pathLength - 1; i >= 0 ; i--) {
             pathToVictory.add(pathToVictoryReverse.get(i));
         }
 
