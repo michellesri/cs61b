@@ -241,8 +241,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
 
         contents[foundIndex].myPriority = priority;
-        swim(foundIndex);
         sink(foundIndex);
+        swim(foundIndex);
     }
 
     /**
