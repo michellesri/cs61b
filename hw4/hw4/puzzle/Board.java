@@ -2,6 +2,7 @@ package hw4.puzzle;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** Returns the string representation of the board.
@@ -129,24 +130,23 @@ public class Board implements WorldState {
                 }
             }
         }
-        return counter - 1;
+        return counter;
 
     }
     public int manhattan() {
-        int positionCounter = 0;
         int manhattanCounter = 0;
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles.length; j++) {
-                positionCounter++;
                 int currentTile = tiles[i][j];
                 if (currentTile == 0) {
                     continue;
                 }
-                int startingDistance = Math.abs(currentTile - positionCounter);
-                if (currentTile != positionCounter) {
-                    manhattanCounter += startingDistance / tiles.length;
-                    manhattanCounter += startingDistance % tiles.length;
-                }
+
+                int targetRow = (currentTile - 1) / tiles.length;
+                int targetCol = (currentTile - 1) % tiles.length;
+
+                manhattanCounter += Math.abs(targetRow - i);
+                manhattanCounter += Math.abs(targetCol - j);
             }
         }
 
@@ -157,9 +157,19 @@ public class Board implements WorldState {
         return manhattan();
 
     }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(tiles);
+    }
+
     public boolean equals(Object y) {
         if (y instanceof Board) {
             Board otherBoard = (Board) y;
+
+            if (otherBoard.size != this.size) {
+                return false;
+            }
 
             for (int i = 0; i < otherBoard.size; i++) {
                 for (int j = 0; j < otherBoard.size; j++) {
@@ -185,6 +195,12 @@ public class Board implements WorldState {
         }
         s.append("\n");
         return s.toString();
+    }
+
+    public static void main(String[] args) {
+        int[][] grid = { { 5, 8, 7}, {1, 4, 6}, {3, 0, 2} };
+        Board board = new Board(grid);
+        board.manhattan();
     }
 }
 
