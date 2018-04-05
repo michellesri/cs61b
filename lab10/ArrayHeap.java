@@ -478,3 +478,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     }
 
 }
+
+// fix swim / sink because change priority for the better is not working-- means swimming is not working or sinking when it's not supposed to
+// copy testinsertandremoveallbutlast
+// PQ.changepriority(d) to 2
+// print out heap -> iterate through contents and iterate the letter
+
+// change changeprioirty first

@@ -19,3 +19,9 @@ public class BreadthFirstDemo {
     }
 
 }
+
+// start at a spot
+// put it in a q
+// poll it off the q
+// check it
+// recurse call for its neighbors
