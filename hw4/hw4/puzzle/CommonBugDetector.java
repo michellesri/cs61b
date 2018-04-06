@@ -10,6 +10,7 @@ import java.util.Objects;
 public class CommonBugDetector {
     public static class CommonBugPuzzleState implements WorldState {
         private char name;
+
         public CommonBugPuzzleState() {
             name = 's';
         }
@@ -32,14 +33,22 @@ public class CommonBugDetector {
         @Override
         public Iterable<WorldState> neighbors() {
             switch (name) {
-                case('s'): return createWorldStateList(List.of('a', 'x'));
-                case('a'): return createWorldStateList(List.of('b'));
-                case('b'): return createWorldStateList(List.of('c'));
-                case('c'): return createWorldStateList(List.of('d'));
-                case('d'): return createWorldStateList(List.of('e'));
-                case('e'): return createWorldStateList(List.of('g'));
-                case('x'): return createWorldStateList(List.of('c'));
-                default: return null;
+                case ('s'):
+                    return createWorldStateList(List.of('a', 'x'));
+                case ('a'):
+                    return createWorldStateList(List.of('b'));
+                case ('b'):
+                    return createWorldStateList(List.of('c'));
+                case ('c'):
+                    return createWorldStateList(List.of('d'));
+                case ('d'):
+                    return createWorldStateList(List.of('e'));
+                case ('e'):
+                    return createWorldStateList(List.of('g'));
+                case ('x'):
+                    return createWorldStateList(List.of('c'));
+                default:
+                    return null;
             }
         }
 
@@ -80,7 +89,7 @@ public class CommonBugDetector {
         AlphabetEasyPuzzle aep = new AlphabetEasyPuzzle('a');
         Solver s3 = new Solver(aep);
         System.out.println("TODO: Print out the number of total things ever"
-                           + " enqueued in your MinPQ and compare to the comments.");
+                + " enqueued in your MinPQ and compare to the comments.");
         // if you print out the total number of items enqueued by s3
         // it should be approximately 25, not approximately 50.
     }

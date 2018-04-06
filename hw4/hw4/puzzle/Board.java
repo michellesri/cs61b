@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/** Returns the string representation of the board.
-      * Uncomment this method. */
+/**
+ * Returns the string representation of the board.
+ * Uncomment this method.
+ */
 
 public class Board implements WorldState {
     private int[][] tiles;
@@ -22,6 +24,7 @@ public class Board implements WorldState {
     public int tileAt(int i, int j) {
         return tiles[i][j];
     }
+
     public int size() {
         return size;
     }
@@ -37,19 +40,20 @@ public class Board implements WorldState {
 
         return copy;
     }
+
     public Iterable<WorldState> neighbors() {
         // check around the zero tile
-            // see if any of them around it are out of bounds (ignore if they are)
+        // see if any of them around it are out of bounds (ignore if they are)
         // the tile at the row -1 of zeroTile moves down
         // the tile at col -1 of zeroTile moves to the right
         // the tile at row + 1 moves up
         // tile at col + 1 moves to the left
 
         //loop through current tiles and move one tile up
-            // put this in my new double nested array
-                // send through board constructor
-            // have up to 4 of these
-            // put all these double nested arrays into one list / arraylist
+        // put this in my new double nested array
+        // send through board constructor
+        // have up to 4 of these
+        // put all these double nested arrays into one list / arraylist
         //return arrayList
 
         int zeroTileRow = -1;
@@ -135,6 +139,7 @@ public class Board implements WorldState {
         return counter;
 
     }
+
     public int manhattan() {
         int manhattanCounter = 0;
         for (int i = 0; i < tiles.length; i++) {
@@ -155,6 +160,7 @@ public class Board implements WorldState {
         return manhattanCounter;
 
     }
+
     public int estimatedDistanceToGoal() {
         return manhattan();
 
@@ -191,7 +197,7 @@ public class Board implements WorldState {
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
@@ -199,11 +205,11 @@ public class Board implements WorldState {
         return s.toString();
     }
 
-    public static void main(String[] args) {
-        int[][] grid = { { 5, 8, 7}, {1, 4, 6}, {3, 0, 2} };
-        Board board = new Board(grid);
-        board.manhattan();
-    }
+//    public static void main(String[] args) {
+//        int[][] grid = { { 5, 8, 7}, {1, 4, 6}, {3, 0, 2} };
+//        Board board = new Board(grid);
+//        board.manhattan();
+//    }
 }
 
 

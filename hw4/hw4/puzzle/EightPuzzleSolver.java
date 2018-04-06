@@ -7,7 +7,7 @@ public class EightPuzzleSolver {
     /***********************************************************************
      * Test routine for your Solver class. Uncomment and run to test
      * your basic functionality.
-    **********************************************************************/
+     **********************************************************************/
     /*public static void main(String[] args) {
         In in = new In(args[0]);
         int N = in.readInt();

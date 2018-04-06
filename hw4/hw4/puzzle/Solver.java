@@ -11,7 +11,6 @@ public class Solver {
     private SearchNode winningNode;
 
 
-
     public Solver(WorldState initial) {
         // Constructor which solves the puzzle, computing
         // everything necessary for moves() and solution() to
@@ -61,7 +60,7 @@ public class Solver {
 
         int pathLength = pathToVictoryReverse.size();
 
-        for (int i = pathLength - 1; i >= 0 ; i--) {
+        for (int i = pathLength - 1; i >= 0; i--) {
             pathToVictory.add(pathToVictoryReverse.get(i));
         }
 

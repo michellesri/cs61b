@@ -3,9 +3,11 @@ package hw4.puzzle;
 import java.util.Set;
 import java.util.HashSet;
 
-/** Ultra simple puzzle useful for debugging. The puzzle has a state equal to a single
-  * alphabetical lower case character. The goal is 'z'. Neighbors are the characters
-  * immediately to the left and right of the character in the alphabet. */
+/**
+ * Ultra simple puzzle useful for debugging. The puzzle has a state equal to a single
+ * alphabetical lower case character. The goal is 'z'. Neighbors are the characters
+ * immediately to the left and right of the character in the alphabet.
+ */
 public class AlphabetEasyPuzzle implements WorldState {
     char character;
 
@@ -16,8 +18,10 @@ public class AlphabetEasyPuzzle implements WorldState {
         character = c;
     }
 
-    /** The neighbors of the WorldState are the characters before and after
-      * character. So if character == 'f', the neighbors will be 'e' and 'g'. */
+    /**
+     * The neighbors of the WorldState are the characters before and after
+     * character. So if character == 'f', the neighbors will be 'e' and 'g'.
+     */
     @Override
     public Iterable<WorldState> neighbors() {
         Set<WorldState> neighbs = new HashSet<>();
@@ -30,7 +34,9 @@ public class AlphabetEasyPuzzle implements WorldState {
         return neighbs;
     }
 
-    /** The goal is 'z', so distance will just be 'z' - character. */
+    /**
+     * The goal is 'z', so distance will just be 'z' - character.
+     */
     @Override
     public int estimatedDistanceToGoal() {
         return 'z' - character;
