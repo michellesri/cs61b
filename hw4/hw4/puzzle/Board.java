@@ -13,10 +13,12 @@ public class Board implements WorldState {
     private int size;
 
     public Board(int[][] tiles) {
-        this.tiles = tiles;
-        this.size = tiles.length;
+        int[][] myTiles = copyTiles(tiles);
 
+        this.tiles = myTiles;
+        this.size = myTiles.length;
     }
+
     public int tileAt(int i, int j) {
         return tiles[i][j];
     }

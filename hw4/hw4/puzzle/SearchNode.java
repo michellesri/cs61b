@@ -22,7 +22,7 @@ public class SearchNode {
 
             if (o1Priority < o2Priority) {
                 return -1;
-            } else if (o1Priority == o1Priority){
+            } else if (o1Priority == o2Priority){
                 return 0;
             } else {
                 return 1;

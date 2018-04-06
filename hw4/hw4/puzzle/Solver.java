@@ -7,7 +7,7 @@ import java.util.*;
 public class Solver {
 
     private Set<WorldState> processedWorldStates = new HashSet<>();
-    private MinPQ<SearchNode> minPQ = new MinPQ<>(1, new SearchNode.SearchNodeComparator());
+    private MinPQ<SearchNode> minPQ = new MinPQ<>(new SearchNode.SearchNodeComparator());
     private SearchNode winningNode;
 
 
