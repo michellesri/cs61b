@@ -1,4 +1,7 @@
 import edu.princeton.cs.algs4.Queue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 
 public class MergeSort {
     /**
@@ -35,7 +38,15 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
         // Your code here!
-        return null;
+        Queue<Queue<Item>> singleItemQueue = new Queue<>();
+
+        for (Item item : items) {
+            Queue<Item> singleItem = new Queue<>();
+            singleItem.enqueue(item);
+            singleItemQueue.enqueue(singleItem);
+        }
+
+        return singleItemQueue;
     }
 
     /**
@@ -62,5 +73,25 @@ public class MergeSort {
             Queue<Item> items) {
         // Your code here!
         return items;
+    }
+
+    public static void main(String[] args) {
+        Queue<String> students = new Queue<String>();
+        students.enqueue("a");
+        students.enqueue("jane");
+        students.enqueue("bob");
+        students = MergeSort.mergeSort(students);
+
+
+        Queue<String> sortedStudents = new Queue<String>();
+        sortedStudents.enqueue("a");
+        sortedStudents.enqueue("bob");
+        sortedStudents.enqueue("jane");
+
+        assertEquals(sortedStudents.dequeue(), students.dequeue());;
+        assertEquals(sortedStudents.dequeue(), students.dequeue());;
+        assertEquals(sortedStudents.dequeue(), students.dequeue());
+
+
     }
 }
