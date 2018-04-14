@@ -82,7 +82,11 @@ public class MergeSort {
             singleItemQueue.enqueue(mergeSortedQueues(firstItem, secondItem));
         }
 
-        Queue<Item> queue = singleItemQueue.dequeue();
+        Queue<Item> queue = new Queue<>();
+        if (singleItemQueue.size() > 1) {
+            queue = singleItemQueue.dequeue();
+        }
+
         return queue;
     }
 
