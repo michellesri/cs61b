@@ -1,4 +1,6 @@
 import edu.princeton.cs.algs4.Queue;
+import static org.junit.Assert.assertEquals;
+
 
 public class QuickSort {
     /**
@@ -55,5 +57,26 @@ public class QuickSort {
             Queue<Item> items) {
         // Your code here!
         return items;
+    }
+
+    public static void main(String[] args) {
+        Queue<Integer> intQueue = new Queue<>();
+        intQueue.enqueue(1);
+        intQueue.enqueue(2);
+        intQueue.enqueue(2);
+        intQueue.enqueue(4);
+
+        Queue<Integer> sorted = new Queue<>();
+        sorted.enqueue(1);
+        sorted.enqueue(2);
+        sorted.enqueue(2);
+        sorted.enqueue(4);
+
+        intQueue = quickSort(intQueue);
+
+        assertEquals(sorted.dequeue(), intQueue.dequeue());
+        assertEquals(sorted.dequeue(), intQueue.dequeue());
+        assertEquals(sorted.dequeue(), intQueue.dequeue());
+
     }
 }

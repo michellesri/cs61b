@@ -1,7 +1,5 @@
 import edu.princeton.cs.algs4.Queue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 
 public class MergeSort {
     /**
