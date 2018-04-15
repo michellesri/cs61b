@@ -10,7 +10,7 @@ import java.util.Map;
 public class Rasterer {
 
     public Rasterer() {
-        // YOUR CODE HERE
+
     }
 
     /**
@@ -42,11 +42,48 @@ public class Rasterer {
      *                    forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
+        double lrlon = params.get("lrlon");
+        double ullon = params.get("ullon");
+
+        double lrlat = params.get("lrlat");
+        double ullat = params.get("ullat");
+
+        double width = params.get("w");
+        double height = params.get("h");
+
+        double lonDPP = (lrlon - ullon) / width;
+
+        int depth = findDepth(lonDPP);
+
         // System.out.println(params);
         Map<String, Object> results = new HashMap<>();
         System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
                            + "your browser.");
-        return results;
+
+        String[][] render_grid = new String[6][1];
+        double raster_ul_lon = 0.0f;
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("render_grid", render_grid);
+        result.put("raster_ul_lon", raster_ul_lon);
+        result.put("query_success", true);
+
+        return result;
     }
+
+
+    private int findDepth(double lonDPP) {
+        int currentDepth = 0;
+        final int widthFinal = 256;
+
+        while (currentDepth < 7) {
+            if ((MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / widthFinal * Math.pow(2, currentDepth) > lonDPP) {
+                return currentDepth;
+            }
+            currentDepth++;
+        }
+        return currentDepth;
+    }
+
 
 }
