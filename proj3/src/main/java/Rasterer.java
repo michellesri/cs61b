@@ -1,5 +1,4 @@
 import java.awt.image.Raster;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,35 +43,42 @@ public class Rasterer {
      *                    forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-        double ullonQuery = params.get("ullon");
-        double ullatQuery = params.get("ullat");
+        double queryUllon = params.get("ullon");
+        double queryUllat = params.get("ullat");
 
-        double lrlonQuery = params.get("lrlon");
-        double lrlatQuery = params.get("lrlat");
+        double queryLrlon = params.get("lrlon");
+        double queryLrlat = params.get("lrlat");
 
         double widthQuery = params.get("w"); // width in pixels
         double heightQuery = params.get("h"); // height in pixels
 
-        double lonDPP = (lrlonQuery - ullonQuery) / widthQuery;
+        double lonDPP = (queryLrlon - queryUllon) / widthQuery;
 
         int depth = findDepth(lonDPP);
+
+        Result queryResults = getQuery(queryUllon, MapServer.ROOT_ULLON,
+                queryUllat, MapServer.ROOT_ULLAT,
+                queryLrlon, MapServer.ROOT_LRLON,
+                queryLrlat, MapServer.ROOT_LRLAT,
+                depth);
+
+        // TODO: get everything out of query results and put into hashmap
 
         // System.out.println(params);
         Map<String, Object> results = new HashMap<>();
         System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
                            + "your browser.");
 
-        String[][] render_grid = new String[6][1];
         double raster_ul_lon = 0.0f;
 
-        results.put("render_grid", render_grid);
+//        results.put("render_grid", render_grid);
         results.put("raster_ul_lon", raster_ul_lon);
         results.put("query_success", true);
 
         return results;
     }
 
-    private Result getFilenames(double queryUllon, double rootUllon,
+    private Result getQuery(double queryUllon, double rootUllon,
                                double queryUllat, double rootUllat,
                                double queryLrlon, double rootLrlon,
                                double queryLrlat, double rootLrlat,
@@ -115,7 +121,7 @@ public class Rasterer {
         }
 
         Result result = new Result(raster_lr_lon, raster_lr_lat, raster_ul_lon,
-                raster_ul_lat, depth, true, filenames);
+                raster_ul_lat, depth,true, filenames);
 
         return result;
 
