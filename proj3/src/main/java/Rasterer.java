@@ -1,4 +1,5 @@
 import java.awt.image.Raster;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,8 +50,8 @@ public class Rasterer {
         double lrlonQuery = params.get("lrlon");
         double lrlatQuery = params.get("lrlat");
 
-        double widthQuery = params.get("w");
-        double heightQuery = params.get("h");
+        double widthQuery = params.get("w"); // width in pixels
+        double heightQuery = params.get("h"); // height in pixels
 
         double lonDPP = (lrlonQuery - ullonQuery) / widthQuery;
 
@@ -64,67 +65,61 @@ public class Rasterer {
         String[][] render_grid = new String[6][1];
         double raster_ul_lon = 0.0f;
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("render_grid", render_grid);
-        result.put("raster_ul_lon", raster_ul_lon);
-        result.put("query_success", true);
+        results.put("render_grid", render_grid);
+        results.put("raster_ul_lon", raster_ul_lon);
+        results.put("query_success", true);
+
+        return results;
+    }
+
+    private Result getFilenames(double queryUllon, double rootUllon,
+                               double queryUllat, double rootUllat,
+                               double queryLrlon, double rootLrlon,
+                               double queryLrlat, double rootLrlat,
+                               int depth) {
+
+        double UllonFromTopLeft = queryUllon - rootUllon;
+        double UllatFromTopLeft = queryUllat - rootUllat;
+
+        double LrlonFromTopLeft = queryUllon - rootLrlon;
+        double LrlatFromTopLeft = queryUllat - rootLrlat;
+
+        double tileWidth = (rootLrlon - rootUllon) / Math.pow(2, depth);
+
+        int upperLeftTileX = (int) (UllonFromTopLeft / tileWidth);
+        int upperLeftTileY = (int) (UllatFromTopLeft / tileWidth);
+
+        int lowerRightTileX = (int) (LrlonFromTopLeft / tileWidth);
+        int lowerRightTileY = (int) (LrlatFromTopLeft / tileWidth);
+
+        double raster_lr_lon = lowerRightTileX * tileWidth;
+        double raster_lr_lat = lowerRightTileY * tileWidth;
+
+        double raster_ul_lon = upperLeftTileX * tileWidth;
+        double raster_ul_lat = upperLeftTileY * tileWidth;
+
+        int xSize = lowerRightTileX - upperLeftTileX + 1;
+        int ySize = lowerRightTileY - upperLeftTileY + 1;
+        String[][] filenames = new String[xSize][ySize];
+        // file name example: d1_x0_y0
+
+        int counterX = 0;
+        int counterY = 0;
+        for (int i = upperLeftTileX; i <= lowerRightTileX; i++) {
+            for (int j = upperLeftTileY; j <= lowerRightTileY; j++) {
+                filenames[counterX][counterY] = "d" + depth + "_x" + i + "_y" + j;
+                counterY++;
+            }
+            counterY = 0;
+            counterX++;
+        }
+
+        Result result = new Result(raster_lr_lon, raster_lr_lat, raster_ul_lon,
+                raster_ul_lat, depth, true, filenames);
 
         return result;
+
     }
-
-    private Tile[][] createGrid(int depth) {
-
-        double gridWidth = Math.pow(2, depth);
-        double rootULLon = MapServer.ROOT_ULLON;
-        double rootLRLon = MapServer.ROOT_LRLON;
-
-        double rootULLat = MapServer.ROOT_ULLAT;
-        double rootLRLat = MapServer.ROOT_LRLAT;
-
-        double widthOfTile = (rootLRLon - rootULLon) / gridWidth; // width of tile in longitude
-        double heightOfTile = (rootLRLat - rootULLat) / gridWidth; // height of tile in latitude
-
-
-        Tile[][] tiles = new Tile[(int) gridWidth][(int) gridWidth];
-
-        for (int i = 0; i < gridWidth; i++) {
-            double currentULLon = rootULLon;
-            double currentULLat = rootULLat;
-
-            double currentLRLon = currentULLon + widthOfTile;
-            double currentLRLat = currentULLat + heightOfTile;
-            int x;
-            int y;
-
-            for (int j = 0; j < gridWidth; j++) {
-                currentULLon += widthOfTile;
-                currentULLat += heightOfTile;
-
-                currentLRLon += widthOfTile;
-                currentLRLat += heightOfTile;
-                x = i;
-                y = j;
-
-                tiles[i][j] = new Tile(currentLRLon, currentLRLat, currentULLon,
-                        currentULLat, x, y, widthOfTile, heightOfTile);
-            }
-        }
-        return tiles;
-    }
-
-    private boolean isTileBoundingBox(Tile tile, double ullonquery, double ullatquery,
-                                      double lrlatquery, double lrlonquery,
-                                      double widthOfTile, double heightOfTile) {
-
-        double lrlon = tile.getLrlon();
-        double lrlat = tile.getLrlat();
-        double ullon = tile.getUllon();
-        double ullat = tile.getUllat();
-        return ((lrlon <= lrlonquery || lrlonquery <= (lrlon + widthOfTile))
-                && (ullon <= ullonquery || ullonquery <= (ullon + heightOfTile)));
-    }
-
-// write a main function to test this code?
 
     private int findDepth(double lonDPP) {
         int currentDepth = 0;
@@ -138,16 +133,5 @@ public class Rasterer {
         }
         return currentDepth;
     }
-
-    public static void main(String[] args) {
-        Tile tile = new Tile(2, 2, 0, 0, 0,0, 2, 2);
-
-        Rasterer rasterer = new Rasterer();
-//        rasterer.isTileBoundingBox(tile, 0, 1, 2, 10, 2, 2);
-        System.out.println(rasterer.isTileBoundingBox(tile, 20, 20, 40,
-                40, 2, 2));
-
-    }
-
 
 }
