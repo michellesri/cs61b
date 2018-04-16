@@ -1,3 +1,4 @@
+import java.awt.image.Raster;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,16 +43,16 @@ public class Rasterer {
      *                    forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-        double lrlon = params.get("lrlon");
-        double ullon = params.get("ullon");
+        double ullonQuery = params.get("ullon");
+        double ullatQuery = params.get("ullat");
 
-        double lrlat = params.get("lrlat");
-        double ullat = params.get("ullat");
+        double lrlonQuery = params.get("lrlon");
+        double lrlatQuery = params.get("lrlat");
 
-        double width = params.get("w");
-        double height = params.get("h");
+        double widthQuery = params.get("w");
+        double heightQuery = params.get("h");
 
-        double lonDPP = (lrlon - ullon) / width;
+        double lonDPP = (lrlonQuery - ullonQuery) / widthQuery;
 
         int depth = findDepth(lonDPP);
 
@@ -71,18 +72,81 @@ public class Rasterer {
         return result;
     }
 
+    private Tile[][] createGrid(int depth) {
+
+        double gridWidth = Math.pow(2, depth);
+        double rootULLon = MapServer.ROOT_ULLON;
+        double rootLRLon = MapServer.ROOT_LRLON;
+
+        double rootULLat = MapServer.ROOT_ULLAT;
+        double rootLRLat = MapServer.ROOT_LRLAT;
+
+        double widthOfTile = (rootLRLon - rootULLon) / gridWidth; // width of tile in longitude
+        double heightOfTile = (rootLRLat - rootULLat) / gridWidth; // height of tile in latitude
+
+
+        Tile[][] tiles = new Tile[(int) gridWidth][(int) gridWidth];
+
+        for (int i = 0; i < gridWidth; i++) {
+            double currentULLon = rootULLon;
+            double currentULLat = rootULLat;
+
+            double currentLRLon = currentULLon + widthOfTile;
+            double currentLRLat = currentULLat + heightOfTile;
+            int x;
+            int y;
+
+            for (int j = 0; j < gridWidth; j++) {
+                currentULLon += widthOfTile;
+                currentULLat += heightOfTile;
+
+                currentLRLon += widthOfTile;
+                currentLRLat += heightOfTile;
+                x = i;
+                y = j;
+
+                tiles[i][j] = new Tile(currentLRLon, currentLRLat, currentULLon,
+                        currentULLat, x, y, widthOfTile, heightOfTile);
+            }
+        }
+        return tiles;
+    }
+
+    private boolean isTileBoundingBox(Tile tile, double ullonquery, double ullatquery,
+                                      double lrlatquery, double lrlonquery,
+                                      double widthOfTile, double heightOfTile) {
+
+        double lrlon = tile.getLrlon();
+        double lrlat = tile.getLrlat();
+        double ullon = tile.getUllon();
+        double ullat = tile.getUllat();
+        return ((lrlon <= lrlonquery || lrlonquery <= (lrlon + widthOfTile))
+                && (ullon <= ullonquery || ullonquery <= (ullon + heightOfTile)));
+    }
+
+// write a main function to test this code?
 
     private int findDepth(double lonDPP) {
         int currentDepth = 0;
-        final int widthFinal = 256;
 
         while (currentDepth < 7) {
-            if ((MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / widthFinal * Math.pow(2, currentDepth) > lonDPP) {
+            if ((MapServer.ROOT_LRLON - MapServer.ROOT_ULLON)
+                    / (MapServer.TILE_SIZE * Math.pow(2, currentDepth)) > lonDPP) {
                 return currentDepth;
             }
             currentDepth++;
         }
         return currentDepth;
+    }
+
+    public static void main(String[] args) {
+        Tile tile = new Tile(2, 2, 0, 0, 0,0, 2, 2);
+
+        Rasterer rasterer = new Rasterer();
+//        rasterer.isTileBoundingBox(tile, 0, 1, 2, 10, 2, 2);
+        System.out.println(rasterer.isTileBoundingBox(tile, 20, 20, 40,
+                40, 2, 2));
+
     }
 
 

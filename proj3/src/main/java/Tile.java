@@ -1,24 +1,62 @@
 public class Tile {
 
-    double lrlon;
-    double ullon;
+    private double lrlon;
+    private double ullon;
 
-    double lrlat;
-    double ullat;
 
-    double width;
-    double height;
+    private double lrlat;
+    private double ullat;
 
-    public Tile(double lrlon, double ullon, double lrlat,
-                double ullat, double width, double height) {
+    private double widthOfTile;
+    private double heightOfTile;
 
-        this.lrlon = lrlon;
+
+    private int x;
+    private int y;
+
+    public Tile(double lrlon, double lrlat, double ullon, double ullat,
+                int x, int y, double widthOfTile, double heightOfTile) {
         this.ullon = ullon;
-        this.lrlat = lrlat;
         this.ullat = ullat;
-        this.width = width;
-        this.height = height;
+        this.lrlon = lrlon;
+        this.lrlat = lrlat;
+        this.x = x;
+        this.y = y;
 
+        this.widthOfTile = widthOfTile;
+        this.heightOfTile = heightOfTile;
+    }
+
+    public double getLrlon() {
+        return lrlon;
+    }
+
+    public double getUllon() {
+        return ullon;
+    }
+
+    public double getLrlat() {
+        return lrlat;
+    }
+
+    public double getUllat() {
+        return ullat;
+    }
+
+    public double getWidthOfTile() {
+        return widthOfTile;
+    }
+
+    public double getHeightOfTile() {
+        return heightOfTile;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
 }
