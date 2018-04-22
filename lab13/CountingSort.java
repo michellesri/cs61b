@@ -80,7 +80,7 @@ public class CountingSort {
             max = max > i ? max : i;
             min = min < i ? min : i;
         }
-            min = Math.abs(min);
+        min = Math.abs(min);
 
         // gather all the counts for each value
             // also add the min to increase size of array

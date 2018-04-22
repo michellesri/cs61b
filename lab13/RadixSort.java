@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Class for doing Radix sort
  *
@@ -17,6 +19,7 @@ public class RadixSort {
      */
     public static String[] sort(String[] asciis) {
         // TODO: Implement LSD Sort
+
         return null;
     }
 
@@ -28,8 +31,50 @@ public class RadixSort {
      */
     private static void sortHelperLSD(String[] asciis, int index) {
         // Optional LSD helper method for required LSD radix sort
+        int[] intValsArray = new int[asciis.length];
+
+        for (int i = 0; i < asciis.length; i++) {
+            int charAtCurrentIndex = asciis[i].charAt(index);
+            intValsArray[i] = charAtCurrentIndex;
+        }
+
+        for (int i = 0; i < intValsArray.length; i++) {
+        int min = Integer.MAX_VALUE;
+        int minIndex = 0;
+            for (int j = i; j < intValsArray.length; j++) {
+                if (intValsArray[j] < min) {
+                    min = intValsArray[j];
+                    minIndex = j;
+                }
+            }
+            swap(i, minIndex, intValsArray, asciis);
+        }
+
         return;
     }
+
+    private static void swap(int i, int j, int[] intValsArray, String[] asciis) {
+        int temp = intValsArray[i];
+        intValsArray[i] = intValsArray[j];
+        intValsArray[j] = temp;
+
+        String temp2 = asciis[i];
+        asciis[i] = asciis[j];
+        asciis[j] = temp2;
+    }
+
+    public static void main(String[] args) {
+        String[] blah = new String[3];
+        blah[0] = "bbb";
+        blah[1] = "aaa";
+        blah[2] = "ccc";
+
+        sortHelperLSD(blah, 2);
+        System.out.println(Arrays.toString(blah));
+    }
+
+    //there is a bug in my helper function
+    // in the sort function, call it on every index from LSD until index 0
 
     /**
      * MSD radix sort helper function that recursively calls itself to achieve the sorted array.
