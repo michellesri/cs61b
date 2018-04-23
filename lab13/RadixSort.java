@@ -42,8 +42,8 @@ public class RadixSort {
             }
         }
 
-        for (int i = asciisCopyPadded.length - 1; i >= 0; i--) {
-            sortHelperLSD(asciisCopyPadded, asciisCopy, i);
+        for (int j = longestLength; j >= 0; j--) {
+            sortHelperLSD(asciisCopyPadded, asciisCopy, j);
         }
         return asciisCopy;
     }
