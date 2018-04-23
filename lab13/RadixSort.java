@@ -100,7 +100,7 @@ public class RadixSort {
 //
 ////        sortHelperLSD(blah, 2);
 //        System.out.println(Arrays.toString(blah));
-    }
+//    }
 
     // in the sort function, call it on every index from LSD until index 0
 
