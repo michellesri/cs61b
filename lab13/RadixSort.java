@@ -42,7 +42,7 @@ public class RadixSort {
             }
         }
 
-        for (int i = asciisCopyPadded.length - 1; i > 0; i--) {
+        for (int i = asciisCopyPadded.length - 1; i >= 0; i--) {
             sortHelperLSD(asciisCopyPadded, asciisCopy, i);
         }
         return asciisCopy;
@@ -98,7 +98,7 @@ public class RadixSort {
         blah[1] = "aaa";
         blah[2] = "ccc";
 
-//        sortHelperLSD(blah, 2);
+        sortHelperLSD(blah, 2);
         System.out.println(Arrays.toString(blah));
     }
 
