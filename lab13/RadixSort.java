@@ -39,6 +39,7 @@ public class RadixSort {
             String currentAscii = asciisCopyPadded[i];
             while (currentAscii.length() < longestLength) {
                 currentAscii += blankspace;
+                asciisCopyPadded[i] = currentAscii;
             }
         }
 
@@ -91,15 +92,15 @@ public class RadixSort {
         asciisCopy[i] = asciisCopy[j];
         asciisCopy[j] = tempCopy;
     }
-
+//
 //    public static void main(String[] args) {
 //        String[] blah = new String[3];
-//        blah[0] = "bbb";
-//        blah[1] = "aaa";
+//        blah[1] = "aa";
+//        blah[0] = "b";
 //        blah[2] = "ccc";
 //
-////        sortHelperLSD(blah, 2);
-//        System.out.println(Arrays.toString(blah));
+////        System.out.println(sort(blah));
+//        System.out.println(Arrays.toString(sort(blah)));
 //    }
 
     // in the sort function, call it on every index from LSD until index 0
