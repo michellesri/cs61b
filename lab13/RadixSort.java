@@ -92,14 +92,14 @@ public class RadixSort {
         asciisCopy[j] = tempCopy;
     }
 
-    public static void main(String[] args) {
-        String[] blah = new String[3];
-        blah[0] = "bbb";
-        blah[1] = "aaa";
-        blah[2] = "ccc";
-
-//        sortHelperLSD(blah, 2);
-        System.out.println(Arrays.toString(blah));
+//    public static void main(String[] args) {
+//        String[] blah = new String[3];
+//        blah[0] = "bbb";
+//        blah[1] = "aaa";
+//        blah[2] = "ccc";
+//
+////        sortHelperLSD(blah, 2);
+//        System.out.println(Arrays.toString(blah));
     }
 
     // in the sort function, call it on every index from LSD until index 0
