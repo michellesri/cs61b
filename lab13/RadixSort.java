@@ -92,16 +92,18 @@ public class RadixSort {
         asciisCopy[i] = asciisCopy[j];
         asciisCopy[j] = tempCopy;
     }
-//
-//    public static void main(String[] args) {
-//        String[] blah = new String[3];
-//        blah[1] = "aa";
-//        blah[0] = "b";
-//        blah[2] = "ccc";
-//
-////        System.out.println(sort(blah));
-//        System.out.println(Arrays.toString(sort(blah)));
-//    }
+
+    public static void main(String[] args) {
+        String[] blah = new String[3];
+        blah[0] = " ";
+        blah[1] = "P\u000Bð";
+        blah[2] = "aa";
+
+//        System.out.println(sort(blah));
+        System.out.println(Arrays.toString(sort(blah)));
+    }
+
+    // fix underscore so that it's zero
 
     // in the sort function, call it on every index from LSD until index 0
 
