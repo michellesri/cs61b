@@ -1,4 +1,5 @@
 import java.awt.image.Raster;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,19 +63,22 @@ public class Rasterer {
                 queryLrlat, MapServer.ROOT_LRLAT,
                 depth);
 
-        // TODO: get everything out of query results and put into hashmap
-
         // System.out.println(params);
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
-                           + "your browser.");
 
-        double raster_ul_lon = 0.0f;
+//        double raster_ul_lon = 0.0f;
+        
+        results.put("render_grid", queryResults.filenames);
+        results.put("raster_ul_lon", queryResults.raster_ul_lon);
+        results.put("raster_ul_lat", queryResults.raster_lr_lat);
+        results.put("raster_lr_lon", queryResults.raster_lr_lon);
+        results.put("raster_lr_lat", queryResults.raster_lr_lat);
+        results.put("depth", queryResults.depth);
+        results.put("query_success", queryResults.query_success);
 
-//        results.put("render_grid", render_grid);
-        results.put("raster_ul_lon", raster_ul_lon);
-        results.put("query_success", true);
-
+        for (int i = 0; i < queryResults.filenames.length; i++) {
+            System.out.println("wooo all my results: " + Arrays.toString(queryResults.filenames[i]));
+        }
         return results;
     }
 
@@ -104,8 +108,8 @@ public class Rasterer {
         double raster_ul_lon = upperLeftTileX * tileWidth;
         double raster_ul_lat = upperLeftTileY * tileWidth;
 
-        int xSize = lowerRightTileX - upperLeftTileX + 1;
-        int ySize = lowerRightTileY - upperLeftTileY + 1;
+        int xSize = Math.abs(lowerRightTileX - upperLeftTileX + 1);
+        int ySize = Math.abs(lowerRightTileY - upperLeftTileY + 1);
         String[][] filenames = new String[xSize][ySize];
         // file name example: d1_x0_y0
 
@@ -113,7 +117,7 @@ public class Rasterer {
         int counterY = 0;
         for (int i = upperLeftTileX; i <= lowerRightTileX; i++) {
             for (int j = upperLeftTileY; j <= lowerRightTileY; j++) {
-                filenames[counterX][counterY] = "d" + depth + "_x" + i + "_y" + j;
+                filenames[counterX][counterY] = "d" + depth + "_x" + i + "_y" + j + ".png";
                 counterY++;
             }
             counterY = 0;
