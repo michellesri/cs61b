@@ -33,7 +33,13 @@ public class Main {
 //        GeneratorAudioVisualizer gav = new GeneratorAudioVisualizer(mg);
 //        gav.drawAndPlay(500000, 1000000);
 
-        Generator generator = new SawToothGenerator(512);
+        //sawtooth generator
+//        Generator generator = new SawToothGenerator(512);
+//        GeneratorAudioVisualizer gav = new GeneratorAudioVisualizer(generator);
+//        gav.drawAndPlay(4096, 1000000);
+
+        // accelerating sawtooh generator
+        Generator generator = new AcceleratingSawToothGenerator(200, 1.1);
         GeneratorAudioVisualizer gav = new GeneratorAudioVisualizer(generator);
         gav.drawAndPlay(4096, 1000000);
 	}
