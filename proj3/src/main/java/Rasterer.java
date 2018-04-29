@@ -55,13 +55,13 @@ public class Rasterer {
         double widthQuery = params.get("w"); // width in pixels
         double heightQuery = params.get("h"); // height in pixels
 
-//        double queryUllon = -122.21737217507719;
-//        double queryUllat = 37.828200748182525;
-//        double queryLrlon = -122.21192703680792;
-//        double queryLrlat = 37.82719883703872;
+//        double queryUllon = -122.22970123786706;
+//        double queryUllat = 37.84953486131026;
+//        double queryLrlon = -122.2183737371942;
+//        double queryLrlat = 37.844436007045545;
 //
-//        double widthQuery = 863.4751573901506;
-//        double heightQuery = 825.7718708257584;
+//        double widthQuery = 471.69289870450666;
+//        double heightQuery = 726.1100968054328;
 
         double lonDPP = (queryLrlon - queryUllon) / widthQuery;
 
@@ -86,9 +86,13 @@ public class Rasterer {
         results.put("depth", queryResults.depth);
         results.put("query_success", queryResults.query_success);
 
-        for (int i = 0; i < queryResults.filenames.length; i++) {
-            System.out.println("wooo all my results: " + Arrays.toString(queryResults.filenames[i]));
-        }
+//        if (queryResults.filenames != null) {
+//            for (int i = 0; i < queryResults.filenames.length; i++) {
+//                System.out.println("wooo all my results: " + Arrays.toString(queryResults.filenames[i]));
+//            }
+//
+//        }
+//        System.out.println(results);
         return results;
     }
 
@@ -124,10 +128,10 @@ public class Rasterer {
         int xSize = lowerRightTileX - upperLeftTileX + 1;
         int ySize = lowerRightTileY - upperLeftTileY + 1;
 
-        boolean query_success = true;
-
         if (xSize <= 0 || ySize <= 0) {
-            query_success = false;
+            Result result = new Result(raster_lr_lon, raster_lr_lat, raster_ul_lon,
+                    raster_ul_lat, depth, false, null);
+            return result;
         }
 
         String[][] filenames = new String[ySize][xSize];
@@ -149,21 +153,21 @@ public class Rasterer {
         }
 
         Result result = new Result(raster_lr_lon, raster_lr_lat, raster_ul_lon,
-                raster_ul_lat, depth, query_success, filenames);
+                raster_ul_lat, depth, true, filenames);
 
         return result;
 
     }
 
     private int findDepth(double lonDPP) {
-        int currentDepth = 7;
+        int currentDepth = 0;
 
-        while (currentDepth >= 7) {
+        while (currentDepth < 7) {
             if ((MapServer.ROOT_LRLON - MapServer.ROOT_ULLON)
-                    / (MapServer.TILE_SIZE * Math.pow(2, currentDepth)) > lonDPP) {
+                    / (MapServer.TILE_SIZE * Math.pow(2, currentDepth)) <= lonDPP) {
                 return currentDepth;
             }
-            currentDepth--;
+            currentDepth++;
         }
         return currentDepth;
     }
