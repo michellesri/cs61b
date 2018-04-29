@@ -80,7 +80,7 @@ public class Rasterer {
 
         results.put("render_grid", queryResults.filenames);
         results.put("raster_ul_lon", queryResults.raster_ul_lon);
-        results.put("raster_ul_lat", queryResults.raster_lr_lat);
+        results.put("raster_ul_lat", queryResults.raster_ul_lat);
         results.put("raster_lr_lon", queryResults.raster_lr_lon);
         results.put("raster_lr_lat", queryResults.raster_lr_lat);
         results.put("depth", queryResults.depth);
