@@ -44,14 +44,24 @@ public class Rasterer {
      *                    forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
+
         double queryUllon = params.get("ullon");
         double queryUllat = params.get("ullat");
+
 
         double queryLrlon = params.get("lrlon");
         double queryLrlat = params.get("lrlat");
 
         double widthQuery = params.get("w"); // width in pixels
         double heightQuery = params.get("h"); // height in pixels
+
+//        double queryUllon = -122.21737217507719;
+//        double queryUllat = 37.828200748182525;
+//        double queryLrlon = -122.21192703680792;
+//        double queryLrlat = 37.82719883703872;
+//
+//        double widthQuery = 863.4751573901506;
+//        double heightQuery = 825.7718708257584;
 
         double lonDPP = (queryLrlon - queryUllon) / widthQuery;
 
@@ -67,7 +77,7 @@ public class Rasterer {
         Map<String, Object> results = new HashMap<>();
 
 //        double raster_ul_lon = 0.0f;
-        
+
         results.put("render_grid", queryResults.filenames);
         results.put("raster_ul_lon", queryResults.raster_ul_lon);
         results.put("raster_ul_lat", queryResults.raster_lr_lat);
@@ -91,55 +101,69 @@ public class Rasterer {
         double UllonFromTopLeft = queryUllon - rootUllon;
         double UllatFromTopLeft = queryUllat - rootUllat;
 
-        double LrlonFromTopLeft = queryUllon - rootLrlon;
-        double LrlatFromTopLeft = queryUllat - rootLrlat;
+        double LrlonFromTopLeft = queryLrlon - rootUllon;
+        double LrlatFromTopLeft = queryLrlat - rootUllat;
 
-        double tileWidth = (rootLrlon - rootUllon) / Math.pow(2, depth);
+        int numTilePerAxis = (int) Math.pow(2, depth);
 
-        int upperLeftTileX = (int) (UllonFromTopLeft / tileWidth);
-        int upperLeftTileY = (int) (UllatFromTopLeft / tileWidth);
+        double tileWidth = (rootLrlon - rootUllon) / numTilePerAxis;
+        double tileHeight = (rootLrlat - rootUllat) / numTilePerAxis;
 
-        int lowerRightTileX = (int) (LrlonFromTopLeft / tileWidth);
-        int lowerRightTileY = (int) (LrlatFromTopLeft / tileWidth);
+        int upperLeftTileX = Math.max((int) (UllonFromTopLeft / tileWidth), 0);
+        int upperLeftTileY = Math.max((int) (UllatFromTopLeft / tileHeight), 0);
 
-        double raster_lr_lon = lowerRightTileX * tileWidth;
-        double raster_lr_lat = lowerRightTileY * tileWidth;
+        int lowerRightTileX = Math.min((int) (LrlonFromTopLeft / tileWidth), numTilePerAxis - 1);
+        int lowerRightTileY = Math.min((int) (LrlatFromTopLeft / tileHeight), numTilePerAxis - 1);
 
-        double raster_ul_lon = upperLeftTileX * tileWidth;
-        double raster_ul_lat = upperLeftTileY * tileWidth;
+        double raster_ul_lon = upperLeftTileX * tileWidth + rootUllon;
+        double raster_ul_lat = upperLeftTileY * tileHeight + rootUllat;
 
-        int xSize = Math.abs(lowerRightTileX - upperLeftTileX + 1);
-        int ySize = Math.abs(lowerRightTileY - upperLeftTileY + 1);
-        String[][] filenames = new String[xSize][ySize];
+        double raster_lr_lon = lowerRightTileX * tileWidth + tileWidth + rootUllon;
+        double raster_lr_lat = lowerRightTileY * tileHeight + tileHeight + rootUllat;
+
+        int xSize = lowerRightTileX - upperLeftTileX + 1;
+        int ySize = lowerRightTileY - upperLeftTileY + 1;
+
+        boolean query_success = true;
+
+        if (xSize <= 0 || ySize <= 0) {
+            query_success = false;
+        }
+
+        String[][] filenames = new String[ySize][xSize];
+        // num files
+//        int numFiles = (int) Math.pow(2, depth);
+//        String[][] filenames = new String[numFiles][numFiles];
         // file name example: d1_x0_y0
 
         int counterX = 0;
         int counterY = 0;
-        for (int i = upperLeftTileX; i <= lowerRightTileX; i++) {
-            for (int j = upperLeftTileY; j <= lowerRightTileY; j++) {
-                filenames[counterX][counterY] = "d" + depth + "_x" + i + "_y" + j + ".png";
-                counterY++;
+        for (int j = upperLeftTileY; j <= lowerRightTileY; j++) {
+            for (int i = upperLeftTileX; i <= lowerRightTileX; i++) {
+
+                filenames[counterY][counterX] = "d" + depth + "_x" + i + "_y" + j + ".png";
+                counterX++;
             }
-            counterY = 0;
-            counterX++;
+            counterX = 0;
+            counterY++;
         }
 
         Result result = new Result(raster_lr_lon, raster_lr_lat, raster_ul_lon,
-                raster_ul_lat, depth,true, filenames);
+                raster_ul_lat, depth, query_success, filenames);
 
         return result;
 
     }
 
     private int findDepth(double lonDPP) {
-        int currentDepth = 0;
+        int currentDepth = 7;
 
-        while (currentDepth < 7) {
+        while (currentDepth >= 7) {
             if ((MapServer.ROOT_LRLON - MapServer.ROOT_ULLON)
                     / (MapServer.TILE_SIZE * Math.pow(2, currentDepth)) > lonDPP) {
                 return currentDepth;
             }
-            currentDepth++;
+            currentDepth--;
         }
         return currentDepth;
     }
