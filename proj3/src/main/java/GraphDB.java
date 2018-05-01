@@ -6,7 +6,10 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -26,6 +29,12 @@ public class GraphDB {
      * You do not need to modify this constructor, but you're welcome to do so.
      * @param dbPath Path to the XML file to be parsed.
      */
+
+    private final Map<Node, String> nodes = new HashMap<>();
+
+    private final Map<Way, String> ways = new HashMap<>();
+
+
     public GraphDB(String dbPath) {
         try {
             File inputFile = new File(dbPath);
@@ -156,4 +165,46 @@ public class GraphDB {
     double lat(long v) {
         return 0;
     }
+
+    public static class Node {
+        String id;
+        String lon;
+        String lat;
+
+        public Node(String id, String lon, String lat) {
+            this.id = id;
+            this.lon = lon;
+            this.lat = lat;
+        }
+    }
+
+    public void addNode(Node node, String id) {
+        nodes.put(node, id);
+    }
+
+    public static class Way {
+        String id;
+        ArrayList<String> list;
+        boolean isValid;
+        String name;
+
+        public Way(String id, ArrayList<String> list, boolean isValid) {
+            this.id = id;
+            this.list = list;
+            this.isValid = isValid;
+        }
+    }
+
+    public void addWay(Way way, String id) {
+        if (way.isValid) {
+            ways.put(way, id);
+        }
+    }
 }
+
+// need to write
+    // addnode
+    // add way
+    // add edges
+    // remove node
+    // distance between two vertices (linear time closes node is ok)

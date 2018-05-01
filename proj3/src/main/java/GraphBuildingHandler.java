@@ -1,7 +1,9 @@
+//import com.sun.tools.jdeps.Graph;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,6 +41,8 @@ public class GraphBuildingHandler extends DefaultHandler {
     private String activeState = "";
     private final GraphDB g;
 
+    GraphDB.Way currentWay;
+
     /**
      * Create a new GraphBuildingHandler.
      * @param g The graph to populate with the XML data.
@@ -71,17 +75,33 @@ public class GraphBuildingHandler extends DefaultHandler {
 //            System.out.println("Node id: " + attributes.getValue("id"));
 //            System.out.println("Node lon: " + attributes.getValue("lon"));
 //            System.out.println("Node lat: " + attributes.getValue("lat"));
+            String id = attributes.getValue("id");
 
-            /* TODO Use the above information to save a "node" to somewhere. */
+
+            GraphDB.Node node = new GraphDB.Node(
+                    id,
+                    attributes.getValue("lon"),
+                    attributes.getValue("lat")
+            );
+
+            g.addNode(node, id);
+
             /* Hint: A graph-like structure would be nice. */
 
         } else if (qName.equals("way")) {
             /* We encountered a new <way...> tag. */
             activeState = "way";
 //            System.out.println("Beginning a way...");
+            String id = attributes.getValue("id");
+            ArrayList<String> refList= new ArrayList<String>();
+            GraphDB.Way way = new GraphDB.Way(id, refList, false);
+            currentWay = way;
+
         } else if (activeState.equals("way") && qName.equals("nd")) {
             /* While looking at a way, we found a <nd...> tag. */
             //System.out.println("Id of a node in this way: " + attributes.getValue("ref"));
+
+            currentWay.list.add(attributes.getValue("ref"));
 
             /* TODO Use the above id to make "possible" connections between the nodes in this way */
             /* Hint1: It would be useful to remember what was the last node in this way. */
@@ -101,8 +121,12 @@ public class GraphBuildingHandler extends DefaultHandler {
                 //System.out.println("Highway type: " + v);
                 /* TODO Figure out whether this way and its connections are valid. */
                 /* Hint: Setting a "flag" is good enough! */
+                if (ALLOWED_HIGHWAY_TYPES.contains(v)) {
+                    currentWay.isValid = true;
+                }
             } else if (k.equals("name")) {
                 //System.out.println("Way Name: " + v);
+                currentWay.name = v;
             }
 //            System.out.println("Tag with k=" + k + ", v=" + v + ".");
         } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
