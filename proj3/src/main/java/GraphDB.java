@@ -7,9 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -30,10 +28,10 @@ public class GraphDB {
      * @param dbPath Path to the XML file to be parsed.
      */
 
-    private final Map<Node, String> nodes = new HashMap<>();
+    private final Map<Long, Node> nodes = new HashMap<>();
 
-    private final Map<Way, String> ways = new HashMap<>();
-
+    // nodeId -> List of node ids
+    private final Map<Long, Set<Long>> neighbors = new HashMap<>();
 
     public GraphDB(String dbPath) {
         try {
@@ -66,7 +64,14 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean() {
-        // TODO: Your code here.
+        Iterator<Long> iterator = nodes.keySet().iterator();
+
+        while (iterator.hasNext()) {
+            Long key = iterator.next();
+            if (!neighbors.containsKey(key)) {
+                iterator.remove();
+            }
+        }
     }
 
     /**
@@ -74,8 +79,7 @@ public class GraphDB {
      * @return An iterable of id's of all vertices in the graph.
      */
     Iterable<Long> vertices() {
-        //YOUR CODE HERE, this currently returns only an empty list.
-        return new ArrayList<Long>();
+        return nodes.keySet();
     }
 
     /**
@@ -84,7 +88,7 @@ public class GraphDB {
      * @return An iterable of the ids of the neighbors of v.
      */
     Iterable<Long> adjacent(long v) {
-        return null;
+        return neighbors.get(v);
     }
 
     /**
@@ -145,7 +149,18 @@ public class GraphDB {
      * @return The id of the node in the graph closest to the target.
      */
     long closest(double lon, double lat) {
-        return 0;
+
+        long closestNodeId = 0;
+        double closestDistance = Double.MAX_VALUE;
+        for (Long nodeId : nodes.keySet()) {
+            double calculatedDistance = distance(lon, lat, nodes.get(nodeId).lon, nodes.get(nodeId).lat);
+            if (calculatedDistance < closestDistance) {
+                closestDistance = calculatedDistance;
+                closestNodeId = nodeId;
+            }
+
+        }
+        return closestNodeId;
     }
 
     /**
@@ -154,7 +169,7 @@ public class GraphDB {
      * @return The longitude of the vertex.
      */
     double lon(long v) {
-        return 0;
+        return nodes.get(v).lon;
     }
 
     /**
@@ -163,43 +178,78 @@ public class GraphDB {
      * @return The latitude of the vertex.
      */
     double lat(long v) {
-        return 0;
+        return nodes.get(v).lat;
     }
 
     public static class Node {
-        String id;
-        String lon;
-        String lat;
+        Long id;
+        double lon;
+        double lat;
+        String name;
 
-        public Node(String id, String lon, String lat) {
+        public Node(Long id, String lon, String lat, String name) {
             this.id = id;
-            this.lon = lon;
-            this.lat = lat;
+            this.lon = Double.parseDouble(lon);
+            this.lat = Double.parseDouble(lat);
+            this.name = name;
         }
     }
 
-    public void addNode(Node node, String id) {
-        nodes.put(node, id);
+    public void addNode(Long id, Node node) {
+        nodes.put(id, node);
     }
 
     public static class Way {
         String id;
-        ArrayList<String> list;
+        ArrayList<String> nodeIDs;
         boolean isValid;
         String name;
 
         public Way(String id, ArrayList<String> list, boolean isValid) {
             this.id = id;
-            this.list = list;
+            this.nodeIDs = list;
             this.isValid = isValid;
         }
     }
 
-    public void addWay(Way way, String id) {
+    public void addWay(Way way) {
         if (way.isValid) {
-            ways.put(way, id);
+//            ways.put(way);
+            for (int i = 0; i < way.nodeIDs.size() - 1; i++) {
+                Long currentNodeId = Long.parseLong(way.nodeIDs.get(i));
+                Long nextNodeId = Long.parseLong(way.nodeIDs.get(i + 1));
+
+                // Add nextNodeId to the neighbors of currentNodeId
+                if (neighbors.containsKey(currentNodeId)) {
+                    neighbors.get(currentNodeId).add(nextNodeId);
+                } else {
+                    // temp represents the new neighbors of currentNodeId
+                    Set<Long> temp = new HashSet<>();
+                    temp.add(nextNodeId);
+                    neighbors.put(currentNodeId, temp);
+                }
+
+                // Add currentNodeId to the neighbors of nextNodeId
+                if (neighbors.containsKey(nextNodeId)) {
+                    neighbors.get(nextNodeId).add(currentNodeId);
+                } else {
+                    // temp represents the new neighbors of nextNodeId
+                    Set<Long> temp = new HashSet<>();
+                    temp.add(currentNodeId);
+                    neighbors.put(nextNodeId, temp);
+                }
+
+                Set<String> temp = new HashSet<>();
+                String next = null;
+                if (way.nodeIDs.size() - i > 1) {
+                    next = way.nodeIDs.get(i + 1);
+                    temp.add(next);
+                }
+            }
         }
+
     }
+
 }
 
 // need to write

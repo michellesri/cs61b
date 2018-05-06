@@ -43,6 +43,8 @@ public class GraphBuildingHandler extends DefaultHandler {
 
     GraphDB.Way currentWay;
 
+    GraphDB.Node currentNode;
+
     /**
      * Create a new GraphBuildingHandler.
      * @param g The graph to populate with the XML data.
@@ -75,16 +77,19 @@ public class GraphBuildingHandler extends DefaultHandler {
 //            System.out.println("Node id: " + attributes.getValue("id"));
 //            System.out.println("Node lon: " + attributes.getValue("lon"));
 //            System.out.println("Node lat: " + attributes.getValue("lat"));
-            String id = attributes.getValue("id");
+            Long id = Long.parseLong(attributes.getValue("id"));
 
 
             GraphDB.Node node = new GraphDB.Node(
                     id,
                     attributes.getValue("lon"),
-                    attributes.getValue("lat")
+                    attributes.getValue("lat"),
+                    ""
             );
 
-            g.addNode(node, id);
+            currentNode = node;
+
+            g.addNode(id, currentNode);
 
             /* Hint: A graph-like structure would be nice. */
 
@@ -93,7 +98,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             activeState = "way";
 //            System.out.println("Beginning a way...");
             String id = attributes.getValue("id");
-            ArrayList<String> refList= new ArrayList<String>();
+            ArrayList<String> refList = new ArrayList<String>();
             GraphDB.Way way = new GraphDB.Way(id, refList, false);
             currentWay = way;
 
@@ -101,7 +106,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             /* While looking at a way, we found a <nd...> tag. */
             //System.out.println("Id of a node in this way: " + attributes.getValue("ref"));
 
-            currentWay.list.add(attributes.getValue("ref"));
+            currentWay.nodeIDs.add(attributes.getValue("ref"));
 
             /* TODO Use the above id to make "possible" connections between the nodes in this way */
             /* Hint1: It would be useful to remember what was the last node in this way. */
@@ -132,7 +137,7 @@ public class GraphBuildingHandler extends DefaultHandler {
         } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
                 .equals("name")) {
             /* While looking at a node, we found a <tag...> with k="name". */
-            /* TODO Create a location. */
+            currentNode.name = attributes.getValue("v");
             /* Hint: Since we found this <tag...> INSIDE a node, we should probably remember which
             node this tag belongs to. Remember XML is parsed top-to-bottom, so probably it's the
             last node that you looked at (check the first if-case). */
@@ -158,7 +163,10 @@ public class GraphBuildingHandler extends DefaultHandler {
             /* Hint1: If you have stored the possible connections for this way, here's your
             chance to actually connect the nodes together if the way is valid. */
 //            System.out.println("Finishing a way...");
+
+            g.addWay(currentWay);
         }
+
     }
 
 }
