@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,9 +22,44 @@ public class Router {
      * @param destlat The latitude of the destination location.
      * @return A list of node id's in the order visited on the shortest path.
      */
+
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+
+        PriorityQueue<Vertex> PQfringe = new PriorityQueue<>();
+        Map<Long, Vertex> verticesMap = new HashMap<>();
+        // keeps track of vertex id to vertex node
+
+        // distance between start and end node
+         double startToEndDistance = g.distance(stlon, stlat, destlon, destlat);
+
+
+        for (Long vertexId : g.vertices()) {
+            double heuristic = g.distance(g.lon(vertexId), g.lat(vertexId), destlon, destlat);
+            double distance = Double.MAX_VALUE;
+            Vertex vertex = new Vertex(vertexId, distance, heuristic);
+            PQfringe.add(vertex);
+            verticesMap.put(vertexId, vertex);
+        }
+
+        // relaxation - go through all the nodes and see if current distance is better than current best distance
+            // if so, we update all the neighbors
+        while (PQfringe.size() > 0) {
+            Vertex vertex = PQfringe.poll();
+            Iterable<Long> vertexNeighbors = g.adjacent(vertex.id);
+
+            for (Long neighborVertex : vertexNeighbors) {
+                Vertex currentNeighbor = verticesMap.get(neighborVertex);
+                double previousToCurrentVertexDistance = vertex.distance + g.distance(g.lon(neighborVertex), g.lat(neighborVertex), g.lon(vertex.id), g.lat(vertex.id));
+                if (currentNeighbor.distance > previousToCurrentVertexDistance) {
+                    currentNeighbor.distance = previousToCurrentVertexDistance;
+                    PQfringe.remove(currentNeighbor);
+                    PQfringe.add(currentNeighbor);
+                }
+            }
+        }
+
+            return null; // FIXME
     }
 
     /**
@@ -37,6 +71,7 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
+
         return null; // FIXME
     }
 
@@ -158,6 +193,37 @@ public class Router {
         @Override
         public int hashCode() {
             return Objects.hash(direction, way, distance);
+        }
+    }
+
+    public static class Vertex implements Comparable<Vertex> {
+        long id;
+        double distance;
+        double heuristic;
+
+        public Vertex(long id, double distance, double heuristic) {
+            this.id = id;
+            this.distance = distance; //g(n) best known distance from source to current vertex. my current is Integer.MAX_VAL
+            this.heuristic = heuristic; // h(n) heuristic distance from vertex to destination
+        }
+
+        @Override
+        public int compareTo(Vertex o) {
+            if (o.distance == Double.MAX_VALUE && distance == Double.MAX_VALUE) {
+                return 0;
+            } else if (o.distance == Double.MAX_VALUE) {
+                return -1;
+            } else if (distance == Double.MAX_VALUE){
+                return 1;
+            }
+
+            if (distance + heuristic < o.distance + o.heuristic) {
+                return -1;
+            } else if (o.distance + o.heuristic == distance + heuristic) {
+                return 0;
+            } else {
+                return 1;
+            }
         }
     }
 }
