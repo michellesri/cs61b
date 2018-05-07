@@ -30,36 +30,55 @@ public class Router {
         Map<Long, Vertex> verticesMap = new HashMap<>();
         // keeps track of vertex id to vertex node
 
+        List<Long> shortestPathList = new ArrayList<>();
+
         // distance between start and end node
-         double startToEndDistance = g.distance(stlon, stlat, destlon, destlat);
+         double startToEndDistance = GraphDB.distance(stlon, stlat, destlon, destlat);
 
 
         for (Long vertexId : g.vertices()) {
-            double heuristic = g.distance(g.lon(vertexId), g.lat(vertexId), destlon, destlat);
+            // calculate values for all vertices in graph and add them to PQ and verticesMap
+            double heuristic = GraphDB.distance(g.lon(vertexId), g.lat(vertexId), destlon, destlat);
             double distance = Double.MAX_VALUE;
-            Vertex vertex = new Vertex(vertexId, distance, heuristic);
+            Vertex vertex = new Vertex(vertexId, distance, heuristic, null);
             PQfringe.add(vertex);
             verticesMap.put(vertexId, vertex);
         }
 
+        long startVertexId = g.closest(stlon, stlat);
+        Vertex startVertex = verticesMap.get(startVertexId);
+        startVertex.distance = GraphDB.distance(g.lon(startVertexId), g.lat(startVertexId), stlon, stlat);
+        startVertex.parentId = null;
+        PQfringe.remove(startVertex);
+        PQfringe.add(startVertex);
+
         // relaxation - go through all the nodes and see if current distance is better than current best distance
             // if so, we update all the neighbors
+        long destVertexId = g.closest(destlon, destlat);
         while (PQfringe.size() > 0) {
             Vertex vertex = PQfringe.poll();
+            if (vertex.id == destVertexId) {
+                while (vertex != null) {
+                    shortestPathList.add(vertex.id);
+                    vertex = verticesMap.get(vertex.parentId);
+                }
+                break;
+            }
             Iterable<Long> vertexNeighbors = g.adjacent(vertex.id);
-
             for (Long neighborVertex : vertexNeighbors) {
                 Vertex currentNeighbor = verticesMap.get(neighborVertex);
-                double previousToCurrentVertexDistance = vertex.distance + g.distance(g.lon(neighborVertex), g.lat(neighborVertex), g.lon(vertex.id), g.lat(vertex.id));
-                if (currentNeighbor.distance > previousToCurrentVertexDistance) {
-                    currentNeighbor.distance = previousToCurrentVertexDistance;
+                double currentNeighborsNewDistanceFromSource = vertex.distance + GraphDB.distance(g.lon(neighborVertex), g.lat(neighborVertex), g.lon(vertex.id), g.lat(vertex.id));
+                if (currentNeighbor.distance > currentNeighborsNewDistanceFromSource) {
+                    currentNeighbor.parentId = vertex.id;
+                    currentNeighbor.distance = currentNeighborsNewDistanceFromSource;
                     PQfringe.remove(currentNeighbor);
                     PQfringe.add(currentNeighbor);
                 }
             }
         }
+        Collections.reverse(shortestPathList);
+        return shortestPathList;
 
-            return null; // FIXME
     }
 
     /**
@@ -67,7 +86,7 @@ public class Router {
      * @param g The graph to use.
      * @param route The route to translate into directions. Each element
      *              corresponds to a node from the graph in the route.
-     * @return A list of NavigatiionDirection objects corresponding to the input
+     * @return A list of NavigationDirection objects corresponding to the input
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
@@ -200,11 +219,14 @@ public class Router {
         long id;
         double distance;
         double heuristic;
+        Long parentId;
 
-        public Vertex(long id, double distance, double heuristic) {
+        public Vertex(long id, double distance, double heuristic, Long parentId) {
             this.id = id;
             this.distance = distance; //g(n) best known distance from source to current vertex. my current is Integer.MAX_VAL
             this.heuristic = heuristic; // h(n) heuristic distance from vertex to destination
+            this.parentId = parentId;
+
         }
 
         @Override

@@ -74,10 +74,6 @@ public class GraphDB {
         }
     }
 
-    public Node getVertex(long vertexId) {
-        return nodes.get(vertexId);
-    }
-
     /**
      * Returns an iterable of all vertex IDs in the graph.
      * @return An iterable of id's of all vertices in the graph.
