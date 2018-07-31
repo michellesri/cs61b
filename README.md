@@ -15,7 +15,7 @@ Core Topics include:
 - Sorting Algorithms (quicksort, heapsort, mergesort)
 
 Project 3: Bear Maps
-Used A* search to find the shortests paths on a rastered map.
+Used A* search to find the shortest paths on a rastered map.
 
 ![](https://github.com/michellesri/cs61b/blob/master/misc/BearMaps.gif)
 
